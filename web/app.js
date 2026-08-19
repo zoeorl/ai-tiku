@@ -83,7 +83,7 @@ function parseEntries(md, source) {
   return out;
 }
 
-/* ============ 极简 md 渲染（规律页） ============ */
+/* ============ 规律页可视化渲染 ============ */
 function escapeHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
@@ -93,40 +93,140 @@ function inline(s) {
   s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
   return s;
 }
-function renderMd(md) {
+function extractTags(text) {
+  const tags = [];
+  const clean = text.replace(/【([^】]+)】/g, (m, t) => { if (!tags.includes(t)) tags.push(t); return ''; });
+  return { tags, clean };
+}
+function tagChip(t) {
+  let cls = 'x-other';
+  if (t === '姜') cls = 'x-jiang';
+  else if (t === '黄') cls = 'x-huang';
+  else if (t === 'KiK') cls = 'x-kik';
+  else if (t.indexOf('跨博主') === 0) cls = 'x-cross';
+  const label = t.indexOf('跨博主') === 0 ? '跨博主' : t;
+  return `<span class="tagx ${cls}" title="${escapeHtml(t)}">${escapeHtml(label)}</span>`;
+}
+function tagsHtml(tags) { return tags.length ? `<span class="rtags">${tags.map(tagChip).join('')}</span>` : ''; }
+
+function ruleItemHtml(num, raw) {
+  const { tags, clean } = extractTags(raw);
+  let text = clean.trim();
+  let title = '';
+  const bm = text.match(/^\*\*(.+?)\*\*\s*[:：]?\s*([\s\S]*)$/);
+  if (bm) { title = bm[1]; text = bm[2]; }
+  else if (/^「/.test(text)) {
+    const q = text.match(/^「([^」]*)」\s*([^→：；—]{0,14})/);
+    if (q) { title = '「' + q[1] + '」' + (q[2] || '').trim(); text = text.slice(q[0].length); }
+  }
+  if (!title) {
+    const c = text.match(/^([^：:→（；]{2,24})[：:→（；]/);
+    if (c) { title = c[1]; text = text.slice(c[0].length); }
+  }
+  if (!title) { title = text.slice(0, 24); text = text.slice(24); }
+  text = text.replace(/^\s*[：:]\s*/, '').trim();
+  const si = text.indexOf('；', 60);
+  const cut = text.length > 110 ? (si > -1 ? si + 1 : 110) : -1;
+  const preview = cut > -1 ? text.slice(0, cut) + '…' : text;
+  const rest = cut > -1 ? text.slice(cut) : '';
+  return `
+  <div class="rcard">
+    <div class="rcard-head">
+      <span class="rnum">${escapeHtml(num)}</span>
+      <span class="rtitle">${escapeHtml(title)}</span>
+      ${tagsHtml(tags)}
+    </div>
+    ${preview ? `<p class="rpreview">${escapeHtml(preview)}</p>` : ''}
+    ${rest ? `<details class="rmore"><summary>展开完整验证细节</summary><p>${escapeHtml(rest)}</p></details>` : ''}
+  </div>`;
+}
+
+function groupHeadHtml(raw) {
+  const { tags, clean } = extractTags(raw);
+  const m = clean.match(/^\*\*([A-D])\.\s*(.+?)\*\*$/);
+  if (!m) return `<h3>${inline(clean)}</h3>`;
+  const nm = m[2].match(/^(.+?)（(.+)）$/);
+  return `
+  <div class="rgroup">
+    <span class="rletter">${m[1]}</span>
+    <div style="flex:1">
+      <div class="gtitle">${escapeHtml(nm ? nm[1] : m[2])}</div>
+      ${nm ? `<div class="gsub">${escapeHtml(nm[2])}</div>` : ''}
+    </div>
+    ${tagsHtml(tags)}
+  </div>`;
+}
+
+function boardLineHtml(raw) {
+  const { clean } = extractTags(raw);
+  const m = clean.match(/^\*\*(.+?)\*\*\s*[:：]\s*([\s\S]*)$/);
+  if (!m || m[2].indexOf('>') === -1) return null;
+  let rest = m[2];
+  let note = '';
+  const nm = rest.match(/（[^（）]*）$/);
+  if (nm) { note = nm[0]; rest = rest.slice(0, rest.length - note.length); }
+  let rank = 0;
+  const pills = rest.split('>').map(s => s.trim()).filter(Boolean)
+    .map(ch => ch.split('=').map(p => {
+      rank += 1;
+      const pm = p.trim().match(/^(.+?)（(.+)）$/);
+      const who = pm ? pm[1] : p.trim();
+      const val = pm ? pm[2] : '';
+      return `<span class="bpill"><i>${rank}</i>${escapeHtml(who)}${val ? `<b>${escapeHtml(val)}</b>` : ''}</span>`;
+    }).join('<span class="tie">=</span>')).join('');
+  return `
+  <div class="rboard">
+    <h4>${escapeHtml(m[1])}</h4>
+    <div class="bpills">${pills}</div>
+    ${note ? `<div class="rnote">${escapeHtml(note.slice(1, -1))}</div>` : ''}
+  </div>`;
+}
+
+function renderTable(rows) {
+  const cellsOf = r => r.split('|').slice(1, -1).map(c => c.trim());
+  const head = cellsOf(rows[0]);
+  const body = rows.slice(2).map(cellsOf);
+  return `<div class="rtable-wrap"><table class="rtable"><thead><tr>${head.map(c => `<th>${inline(c)}</th>`).join('')}</tr></thead><tbody>${body.map(r => `<tr>${r.map(c => `<td>${inline(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+
+function renderRulesVisual(md) {
   const lines = md.split('\n');
   const html = [];
-  let inList = false, inTable = false;
-  const closeList = () => { if (inList) { html.push('</ul>'); inList = false; } };
-  const closeTable = () => { if (inTable) { html.push('</tbody></table>'); inTable = false; } };
-
-  for (const raw of lines) {
-    const line = raw.trimEnd();
-    if (/^\|/.test(line)) {
-      closeList();
-      const cells = line.split('|').slice(1, -1).map(c => c.trim());
-      if (cells.every(c => /^:?-{2,}:?$/.test(c))) continue; // 分隔行
-      const tag = inTable ? 'td' : 'th';
-      if (!inTable) { html.push('<table><thead><tr>' + cells.map(c => `<th>${inline(c)}</th>`).join('') + '</tr></thead><tbody>'); inTable = true; continue; }
-      html.push('<tr>' + cells.map(c => `<${tag}>${inline(c)}</${tag}>`).join('') + '</tr>');
+  let i = 0;
+  while (i < lines.length) {
+    const t = lines[i].trimEnd().trim();
+    if (t === '') { i++; continue; }
+    if (/^---+$/.test(t)) { html.push('<hr>'); i++; continue; }
+    if (/^# /.test(t)) { html.push(`<h1 class="r-h1">${escapeHtml(t.slice(2))}</h1>`); i++; continue; }
+    if (/^## /.test(t)) { html.push(`<h2 class="r-h2">${escapeHtml(t.slice(3))}</h2>`); i++; continue; }
+    if (/^> /.test(t)) {
+      const buf = [];
+      while (i < lines.length && lines[i].trim().startsWith('> ')) { buf.push(inline(lines[i].trim().slice(2))); i++; }
+      html.push(`<div class="rcallout">${buf.map(x => `<p>${x}</p>`).join('')}</div>`);
       continue;
     }
-    closeTable();
-    if (/^### /.test(line)) { closeList(); html.push(`<h3>${inline(line.slice(4))}</h3>`); continue; }
-    if (/^## /.test(line)) { closeList(); html.push(`<h2>${inline(line.slice(3))}</h2>`); continue; }
-    if (/^# /.test(line)) { closeList(); html.push(`<h1>${inline(line.slice(2))}</h1>`); continue; }
-    if (/^---+$/.test(line)) { closeList(); html.push('<hr>'); continue; }
-    if (/^- /.test(line)) {
-      if (!inList) { html.push('<ul>'); inList = true; }
-      html.push(`<li>${inline(line.slice(2))}</li>`);
+    if (/^\|/.test(t)) {
+      const rows = [];
+      while (i < lines.length && lines[i].trim().startsWith('|')) { rows.push(lines[i].trim()); i++; }
+      html.push(renderTable(rows));
       continue;
     }
-    if (/^> /.test(line)) { closeList(); html.push(`<p class="quote">${inline(line.slice(2))}</p>`); continue; }
-    closeList();
-    if (line.trim() === '') continue;
-    html.push(`<p>${inline(line)}</p>`);
+    if (/^\*\*[A-D]\./.test(t)) { html.push(groupHeadHtml(t)); i++; continue; }
+    const bl = boardLineHtml(t);
+    if (bl) { html.push(bl); i++; continue; }
+    const nm = t.match(/^(\d+)\.\s+(.*)$/);
+    if (nm) { html.push(ruleItemHtml(nm[1], nm[2])); i++; continue; }
+    if (/^- /.test(t)) {
+      const body = t.slice(2);
+      if (body.length > 120) { html.push(ruleItemHtml('•', body)); i++; continue; }
+      const buf = [];
+      while (i < lines.length && lines[i].trim().startsWith('- ') && lines[i].trim().slice(2).length <= 120) { buf.push(inline(lines[i].trim().slice(2))); i++; }
+      html.push(`<ul class="rlist">${buf.map(x => `<li>${x}</li>`).join('')}</ul>`);
+      continue;
+    }
+    html.push(`<p class="rpara">${inline(t)}</p>`);
+    i++;
   }
-  closeList(); closeTable();
   return html.join('\n');
 }
 
@@ -380,7 +480,7 @@ async function init() {
     document.getElementById('boards').innerHTML = renderBoards(ALL);
 
     const rulesRes = await fetch(RULES_FILE);
-    document.getElementById('rulesBody').innerHTML = renderMd(await rulesRes.text());
+    document.getElementById('rulesBody').innerHTML = renderRulesVisual(await rulesRes.text());
 
     document.getElementById('search').addEventListener('input', ev => {
       state.q = ev.target.value.trim();
