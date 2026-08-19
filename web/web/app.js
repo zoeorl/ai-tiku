@@ -2,6 +2,7 @@
 const SOURCES = [
   { file: '../01-清华姜学长.md', short: '姜' },
   { file: '../02-黄白.md', short: '黄' },
+  { file: '../03-未来设计师KiK.md', short: 'KiK' },
 ];
 const RULES_FILE = '../00-总览与跨博主规律.md';
 
@@ -124,7 +125,7 @@ function ratioChip(label, v, kind) {
 }
 
 function cardHtml(e) {
-  const bloggerCls = e.short === '姜' ? 'blogger-a' : 'blogger-b';
+  const bloggerCls = e.short === '姜' ? 'blogger-a' : e.short === '黄' ? 'blogger-b' : 'blogger-c';
   const typeShort = e.type.split(/（|\(/)[0];
   return `
   <article class="card">

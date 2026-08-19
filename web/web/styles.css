@@ -110,6 +110,7 @@ select {
 }
 .badge.blogger-a { background: var(--accent-soft); color: var(--accent); }
 .badge.blogger-b { background: #e8f0fb; color: #2f6bc4; }
+.badge.blogger-c { background: #f3eafb; color: #7a3fb8; }
 .badge.type { background: #f1efe9; color: var(--sub); }
 .badge.form { background: var(--green-soft); color: var(--green); }
 
