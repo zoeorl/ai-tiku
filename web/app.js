@@ -68,7 +68,7 @@ function parseEntries(md, source) {
     const tags = (get(/｜\s*标签：([^｜]+?)(?=\s*｜|$)/m) || '').split(/\s+/).map(t => t.replace(/^#/, '')).filter(Boolean);
     const type = get(/^- 内容类型：(.+)$/m);
 
-    // 可选多行字段：内容结构（缩进 bullet）与逐字稿（> 引用，原文照录）
+    // 可选多行字段：内容结构/内容分析（缩进 bullet）与逐字稿（> 引用，原文照录）
     const sectionLines = header => {
       const lines = content.split('\n');
       const out = []; let on = false;
@@ -83,6 +83,8 @@ function parseEntries(md, source) {
       .map(l => l.trim()).filter(l => l.startsWith('- ')).map(l => l.slice(2));
     const script = sectionLines('逐字稿')
       .map(l => l.trim()).filter(l => l.startsWith('>')).map(l => l.replace(/^>\s?/, ''));
+    const analysis = sectionLines('内容分析')
+      .map(l => l.trim()).filter(l => l.startsWith('- ')).map(l => l.slice(2));
 
     out.push({
       id, title, link, date, blogger,
@@ -96,7 +98,7 @@ function parseEntries(md, source) {
       shareRatio: like && share !== null ? share / like : null,
       reason: get(/^- 爆款原因：(.+)$/m),
       tips: get(/^- 可借鉴点：(.+)$/m),
-      structure, script,
+      structure, script, analysis,
       _text: '',
     });
   }
@@ -320,6 +322,16 @@ function openBreakdown(e) {
       <h3>内容结构</h3>
       <ul class="m-structure">${e.structure.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ul>
     </div>` : ''}
+    ${e.analysis.length ? `
+    <div class="m-sec">
+      <h3>内容分析</h3>
+      <ul class="m-structure">${e.analysis.map(s => {
+        const i = s.indexOf('：');
+        return i > 0
+          ? `<li><strong>${escapeHtml(s.slice(0, i))}：</strong>${escapeHtml(s.slice(i + 1))}</li>`
+          : `<li>${escapeHtml(s)}</li>`;
+      }).join('')}</ul>
+    </div>` : ''}
     ${e.script.length ? `
     <div class="m-sec">
       <div class="m-sec-head"><h3>逐字稿</h3><button class="m-copy" type="button">一键复制</button></div>
@@ -382,7 +394,7 @@ function applyFilters(resetPage = true) {
     if (state.form === '视频' && !e.isVideo) return false;
     if (state.form === '图文' && e.isVideo) return false;
     if (q) {
-      const hay = [e.title, e.type, e.reason, e.tips, e.tags.join(' '), e.structure.join(' '), e.script.join(' ')].join(' ').toLowerCase();
+      const hay = [e.title, e.type, e.reason, e.tips, e.tags.join(' '), e.structure.join(' '), e.analysis.join(' '), e.script.join(' ')].join(' ').toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
