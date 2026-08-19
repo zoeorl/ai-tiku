@@ -255,7 +255,7 @@ function cardHtml(e) {
       </div>
     </div>
     <div class="card-title">
-      <a href="${e.link}" target="_blank" rel="noopener">${escapeHtml(e.title)}</a>
+      <a href="${e.link}" target="_blank" rel="noopener" title="电脑需登录小红书网页版后打开；手机点击跳转 App">${escapeHtml(e.title)}</a>
       <div class="card-meta">${e.date || '日期未知'}</div>
     </div>
     <div class="metrics">
@@ -300,7 +300,7 @@ function renderBoards(all) {
       <ol>${b.rows.map((e, i) => `
         <li>
           <span class="rank">${i + 1}</span>
-          <a href="${e.link}" target="_blank" rel="noopener"><span class="who">${e.short}-${e.id}</span>${escapeHtml(e.title)}</a>
+          <a href="${e.link}" target="_blank" rel="noopener" title="电脑需登录小红书网页版后打开；手机点击跳转 App"><span class="who">${e.short}-${e.id}</span>${escapeHtml(e.title)}</a>
           <span class="val">${b.val(e)}</span>
         </li>`).join('')}
       </ol>

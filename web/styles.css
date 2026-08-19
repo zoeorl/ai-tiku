@@ -28,6 +28,15 @@ body {
 
 .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
+/* ============ 原笔记链接提示 ============ */
+.linkhint {
+  background: var(--amber-soft);
+  border-bottom: 1px solid var(--line);
+  color: var(--amber);
+  font-size: 12px;
+}
+.linkhint .wrap { padding-top: 6px; padding-bottom: 6px; }
+
 /* ============ 顶栏 ============ */
 .topbar {
   position: sticky; top: 0; z-index: 20;
