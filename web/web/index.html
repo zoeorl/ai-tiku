@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI博主对标选题库</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <div>
+        <h1>AI博主对标选题库</h1>
+        <p class="sub">已验证爆款 · 规律沉淀 · md 单一数据源实时解析</p>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="library">选题库</button>
+      <button class="tab" data-tab="boards">跨博主榜单</button>
+      <button class="tab" data-tab="rules">跨博主规律</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 选题库 -->
+  <section id="view-library" class="view active">
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="搜索标题 / 标签 / 钩子 / 规律关键词…">
+      <div class="chips" id="bloggerChips"></div>
+      <div class="selects">
+        <select id="typeFilter">
+          <option value="">全部内容类型</option>
+          <option value="教程">教程类</option>
+          <option value="案例拆解">案例拆解</option>
+          <option value="工具测评">工具测评</option>
+          <option value="行业观点">行业观点</option>
+          <option value="其他">其他</option>
+        </select>
+        <select id="formFilter">
+          <option value="">全部形式</option>
+          <option value="视频">视频</option>
+          <option value="图文">图文</option>
+        </select>
+        <select id="sortSelect">
+          <option value="date">发布日 · 新→旧</option>
+          <option value="like">点赞 · 高→低</option>
+          <option value="fav">收藏 · 高→低</option>
+          <option value="favRatio">收藏比 · 高→低</option>
+          <option value="comRatio">评论比 · 高→低</option>
+          <option value="shareRatio">分享比 · 高→低</option>
+        </select>
+      </div>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="grid" id="grid"></div>
+    <div class="empty" id="empty" hidden>没有匹配的条目，换个关键词试试</div>
+  </section>
+
+  <!-- 榜单 -->
+  <section id="view-boards" class="view">
+    <div class="boards" id="boards"></div>
+  </section>
+
+  <!-- 规律 -->
+  <section id="view-rules" class="view">
+    <article class="md" id="rulesBody"></article>
+  </section>
+
+</main>
+
+<footer class="foot wrap">
+  数据来源：对标库 md 文件实时解析 · 每次录入后刷新页面即同步
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
