@@ -72,13 +72,35 @@ body {
 }
 #search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 
-.chips { display: flex; gap: 6px; flex-wrap: wrap; }
-.chip {
+/* ============ 博主下拉选择器（可扩展至数百位博主） ============ */
+.bselect { position: relative; }
+.bselect-btn {
   border: 1px solid var(--line); background: var(--card); cursor: pointer;
-  padding: 6px 14px; border-radius: 999px; font-size: 13px; color: var(--ink);
-  transition: all .15s;
+  padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--ink);
+  transition: all .15s; white-space: nowrap;
 }
-.chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.bselect-btn:hover { border-color: var(--accent); color: var(--accent); }
+.bselect-btn .cnt { color: var(--sub); font-weight: 500; font-size: 12px; margin-left: 4px; }
+.bselect-panel {
+  position: absolute; top: calc(100% + 6px); left: 0; width: 280px; z-index: 40;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(28,26,23,.14); padding: 8px;
+}
+.bselect-panel input {
+  width: 100%; border: 1px solid var(--line); border-radius: 8px;
+  padding: 7px 10px; font-size: 13px; outline: none; background: #faf8f4;
+}
+.bselect-panel input:focus { border-color: var(--accent); }
+.bselect-list { max-height: 300px; overflow: auto; margin-top: 6px; }
+.bselect-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13px;
+}
+.bselect-row:hover { background: #f4f1ea; }
+.bselect-row.active { background: var(--ink); color: #fff; }
+.bselect-row.active .n { color: rgba(255,255,255,.7); }
+.bselect-row .n { color: var(--sub); font-size: 12px; white-space: nowrap; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; vertical-align: middle; }
 
 .selects { display: flex; gap: 8px; flex-wrap: wrap; }
 select {
@@ -108,9 +130,6 @@ select {
   font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px;
   white-space: nowrap;
 }
-.badge.blogger-a { background: var(--accent-soft); color: var(--accent); }
-.badge.blogger-b { background: #e8f0fb; color: #2f6bc4; }
-.badge.blogger-c { background: #f3eafb; color: #7a3fb8; }
 .badge.type { background: #f1efe9; color: var(--sub); }
 .badge.form { background: var(--green-soft); color: var(--green); }
 
@@ -195,6 +214,34 @@ details.analysis .body .lbl { font-weight: 700; color: var(--ink); }
 .md th, .md td { border: 1px solid var(--line); padding: 7px 12px; text-align: left; }
 .md th { background: #faf8f4; font-weight: 700; }
 .md hr { border: 0; border-top: 1px solid var(--line); margin: 20px 0; }
+
+/* ============ 加载更多 ============ */
+.loadmore {
+  display: block; margin: 20px auto 0; cursor: pointer;
+  border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  border-radius: 999px; padding: 10px 28px; font-size: 13px; font-weight: 600;
+  transition: all .15s;
+}
+.loadmore:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ============ 博主总览 ============ */
+.bgrid {
+  display: grid; gap: 14px; margin-top: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.bcard {
+  text-align: left; cursor: pointer; font: inherit; color: inherit;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 16px 18px;
+  display: flex; flex-direction: column; gap: 12px;
+  transition: transform .15s, box-shadow .15s;
+}
+.bcard:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(28,26,23,.08), 0 16px 40px rgba(28,26,23,.09); }
+.bcard-head { display: flex; align-items: center; gap: 8px; }
+.bcard-head .name { font-size: 15px; font-weight: 700; flex: 1; }
+.bcard-head .cnt { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.bcard-top { font-size: 12px; color: var(--sub); border-top: 1px dashed var(--line); padding-top: 10px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .foot { text-align: center; color: var(--sub); font-size: 12px; padding: 20px 0 40px; }
 
