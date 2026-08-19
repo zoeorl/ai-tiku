@@ -187,14 +187,29 @@ details.analysis ul.reason-list, details.analysis ol.tips-list {
   margin: 0; padding-left: 2px; display: flex; flex-direction: column; gap: 4px;
   list-style: none; line-height: 1.65;
 }
-details.analysis ul.reason-list li { padding-left: 14px; position: relative; }
-details.analysis ul.reason-list li::before {
-  content: ""; position: absolute; left: 3px; top: 8px;
-  width: 5px; height: 5px; border-radius: 50%; background: var(--accent); opacity: .55;
+/* 爆款原因：分类行（钩子公式/数据诊断/对比结论） */
+details.analysis ul.reason-list { gap: 7px; }
+details.analysis ul.reason-list li { display: flex; gap: 7px; align-items: flex-start; }
+details.analysis ul.reason-list .r-ico { flex: none; font-size: 11px; line-height: 1.9; }
+details.analysis ul.reason-list .r-body { flex: 1; min-width: 0; }
+details.analysis ul.reason-list li.r-hook .r-body {
+  display: flex; flex-wrap: wrap; gap: 5px; align-items: center;
 }
-details.analysis ul.reason-list .x {
-  color: var(--accent); font-weight: 700; padding: 0 1px;
+details.analysis .r-chip {
+  background: var(--accent-soft); border: 1px solid rgba(230,73,61,.22);
+  padding: 1.5px 8px; border-radius: 6px; font-size: 12px; color: var(--ink);
 }
+details.analysis .r-x { color: var(--accent); font-weight: 800; }
+details.analysis .r-num { color: var(--accent); font-weight: 700; }
+details.analysis .r-ref {
+  font-family: ui-monospace, SFMono-Regular, monospace; font-size: 11.5px; font-weight: 600;
+  background: #f1ede6; color: #6b6459; padding: 0 4px; border-radius: 4px;
+}
+details.analysis .r-warn {
+  color: #b45309; font-weight: 700; background: #fef3e2; padding: 0 3px; border-radius: 4px;
+}
+details.analysis ul.reason-list li.r-cmp .r-body { color: #6b6459; }
+details.analysis ul.reason-list li.r-note .r-ico { color: var(--accent); font-weight: 700; }
 details.analysis ol.tips-list li { padding-left: 20px; position: relative; }
 details.analysis ol.tips-list .num {
   position: absolute; left: 0; top: 0; color: var(--accent); font-weight: 700;

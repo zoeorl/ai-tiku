@@ -253,13 +253,28 @@ function renderRulesVisual(md) {
 }
 
 /* ============ 卡片渲染 ============ */
-// 爆款原因可视化：按 ；拆成要点行，「×」钩子连接符高亮
+// 爆款原因可视化：按 ；拆段后分三类渲染——钩子公式（×成分chips）/数据诊断/对比结论
+function hlNum(h) {
+  // 已 escape 的文本上：条目编号（0XX）→引用标签，其余数字→高亮
+  return h
+    .replace(/倒挂/g, '<span class="r-warn">倒挂</span>')
+    .replace(/(0\d{2})|(\d+(?:\.\d+)?(?:万|%|倍|秒|分钟|分)?)/g,
+      (m, ref, num) => ref ? `<span class="r-ref">${ref}</span>` : `<b class="r-num">${num}</b>`);
+}
 function reasonHtml(reason) {
   const segs = reason.split(/；/).map(s => s.trim()).filter(Boolean);
   const rows = segs.map(s => {
-    let h = escapeHtml(s);
-    h = h.replace(/×/g, '<span class="x">×</span>');
-    return `<li>${h}</li>`;
+    if (s.includes('×')) {
+      const chips = s.split(/×/).map(f => f.trim()).filter(Boolean)
+        .map(f => `<span class="r-chip">${hlNum(escapeHtml(f))}</span>`)
+        .join('<span class="r-x">×</span>');
+      return `<li class="r-hook"><span class="r-ico">🎯</span><span class="r-body">${chips}</span></li>`;
+    }
+    const isCmp = /0\d{2}|对照|验证|再确认|印证|假设|定律|定律再|首条|系列/.test(s);
+    const isData = /收藏|点赞|评论|分享|比值|梯队|全库/.test(s) && /\d/.test(s);
+    const kind = isCmp ? 'cmp' : (isData ? 'data' : 'note');
+    const ico = isCmp ? '🔗' : (isData ? '📊' : '▸');
+    return `<li class="r-${kind}"><span class="r-ico">${ico}</span><span class="r-body">${hlNum(escapeHtml(s))}</span></li>`;
   });
   return `<ul class="reason-list">${rows.join('')}</ul>`;
 }
