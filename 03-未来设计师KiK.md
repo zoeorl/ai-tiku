@@ -81,7 +81,7 @@
 ## 选题列表
 
 ### 014 | Ai教程 | 总结3个用AI做漫画的方法！小白也能轻松上手
-- 链接：https://www.xiaohongshu.com/explore/660026670000000013026777
+- 链接：https://www.xiaohongshu.com/explore/660026670000000013026777?xsec_token=ABXewzPZVAB1RQnTI2uEUU-7N4YAcSKoIh4w32_okXN4E=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2024-03-24
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：视频（73秒，竖屏）｜标签：#不懂就问有问必答 #AI工具 #插画教程 #自由插画师 #分镜头脚本 #设计 #AI插画 #干货分享 #midjourney #Ai绘画 #ai漫画推文 #设计干货 #漫画 #漫画推荐 #ai漫画
@@ -91,7 +91,7 @@
 - 可借鉴点：① 清单体工具书可视频化：三工具×每工具一个演示段的清单结构从图文（006/007）扩展到视频形态藏比1.27同带——形态不是变量，清单结构+资产在场才是；② 场景型清单优于资讯型选题：工具清单绑定一个观众想完成的产出场景（用AI做漫画），藏量高于单纯介绍新模型——选题先定产出场景再选工具；③ 热点指令做方法背书：把已验证热点词写进「更方便」因果句，给新选题导认知；④ 免费声明是工具清单题材的信任标配：免费/付费信息必须在内容内明确，不留悬念；⑤ 标题数字可故意留破绽：标题写3正文写4的不一致不损数据，反成互动讨论素材（与010口播病句同构：不完美细节是互动资产）
 
 ### 013 | Ai教程 | Mj又进化啦！新指令能准确复刻参考图风格！
-- 链接：https://www.xiaohongshu.com/explore/65bbb21d000000001100fe8b
+- 链接：https://www.xiaohongshu.com/explore/65bbb21d000000001100fe8b?xsec_token=ABhlfib0XkpoLAhZIWnKybO5WqtNx-yNGiSAqgzIDX9Zs=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2024-02-01
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：视频（90秒，竖屏）｜标签：#不懂就问有问必答 #midjourney #midjourney学习 #midjourney关键词 #midjiurney学习 #midjiurney教程 #midjourney咒语 #midjiurney更新 #人工智能绘画 #人工智能 #干货分享 #教程 #免费教程（四个midjiurney错拼变体与正确拼写并行覆盖多搜索词路）
@@ -101,7 +101,7 @@
 - 可借鉴点：① 热点窗口可连续复打：011 SDXL Turbo→013 MJ sref两个月内两次抢发新功能窗口双顺挂——同一「XX又进化啦」惊叹钩子换工具/指令再打不衰减，热点窗口系列是可排期的选题源；② 热点窗口内选刚需功能点：「复刻参考图风格」是全用户痛点，藏量比新模型资讯型近翻倍——窗口期选题要挑受众面最大的功能点而非最新的功能名；③ 视频内交付+留作业钩子：指令用法视频内讲完保收藏下限，结尾留作业拉完播并制造观众二创空间；④ 标签拼写变体多词路覆盖：正确拼写+错拼变体（midjiurney）并行挂标签，覆盖更多搜索入口；⑤ 快节奏视频自带图文版二次选题：信息密度高的教程视频有通勤场景折损，同题材图文版是可复用的衍生选题
 
 ### 012 | Ai教程 | 为i装E必备表情包，拯救职场i人
-- 链接：https://www.xiaohongshu.com/explore/6556df2f0000000032034011
+- 链接：https://www.xiaohongshu.com/explore/6556df2f0000000032034011?xsec_token=ABo0K3kW_O8lw-D00ZQyXq34hFy8R3GCnQHN8d1x9Sdbs=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2023-11-17
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：视频（92秒，竖屏带双语字幕）｜标签：#拯救者AIPC头号搭子 #拯救者2023 #拯救者AI异想世界 #aigc #stablediffusion #我和AI有画说 #ai教程 #表情包 #ai表情包 #职场社交 #mbti #i人 #INFJ #Midjourney #RTX加速AI体验（前三为品牌定制话题）
@@ -111,7 +111,7 @@
 - 可借鉴点：① 身份认同钩子抬点赞：i人/INFJ/职场等身份标签精准圈共鸣人群，自嘲式开场（「本infj今天」）比宣称式更有代入感；② 商单压分享是硬规律：品牌话题强绑定使分享比跌到0.4%账号最低——商单内容的传播只能靠点赞不能靠转发；③ 商单保收藏的前提是可复制：黄白商单资产完整可不崩（014/023），KiK这条崩在需特定模型+高配硬件——接商单时选「人人可复现」的教程方向才能保收藏底线；④ 品牌植入放正文中段配教程壳：先立教程价值再带硬件，「教程主题/难度/工具/模型/关键词」五段式信息卡把广告参数包装成教程参数
 
 ### 011 | Ai又进化了！2个方法使用SDXL Turbo模型
-- 链接：https://www.xiaohongshu.com/explore/656c922d000000000801da24
+- 链接：https://www.xiaohongshu.com/explore/656c922d000000000801da24?xsec_token=ABJNJnYtq86MUmObDGhpmD3Jc6hehXmCKVkHZHv4WbyKs=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2023-12-03
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：视频（80秒，竖屏带双语字幕）｜标签：#不懂就问有问必答 #AI插画 #SDXL #SDXL模型 #sdxlturbo #SDXLturbo #midjourney #Stable_Diffusion #Stable_Diffusion小技巧 #Stable_Diffusion教程 #stablediffusion #AIGC #AIGC创世计划 #AIGC原住民 #Ai绘画 #干货分享 #midjourney咒语 #人工智能 #blender #ae #C4D #数码街区由我造 #3d渲染 #3dmax #ai #交互设计
@@ -121,7 +121,7 @@
 - 可借鉴点：① 新模型发布窗口期抢发：行业级新闻发布数天内出教程，热点窗口抬点赞与黄-016同构——「什么时候能用上」比「它是什么」更值得抢；② 交付位置后置配钩子前置承诺：方法放视频结尾拉完播，但标题/开头必须预告交付（「视频最后我分享了」），否则观众无等待理由；③ 进化惊叹情绪渲染：「太牛了/超越想象力」式情绪是热点题材的共鸣燃料；④ 双用法覆盖双生态：MJ路线与SD路线同片交付，两个工具受众面叠加抬选题容量
 
 ### 010 | 作为小4w的Ai博主，分享我的高效自学方法
-- 链接：https://www.xiaohongshu.com/explore/6506ef03000000001302fa20
+- 链接：https://www.xiaohongshu.com/explore/6506ef03000000001302fa20?xsec_token=ABrp_YDgDiWa4cJZBGOb5aPLK1aheDLRR2qrRDTEsRyW0=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2023-09-17
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：视频（1分40秒）｜标签：#AI绘画有点东西 #AI插画 #midjourney #我和AI有画说 #分享学习方法 #新人博主 #自学 #干货分享 #学习 #midjourney学习 #midjourney教程 #midjourney关键词 #stablediffusion #stablediffusion学习 #Stablediffusion
@@ -131,7 +131,7 @@
 - 可借鉴点：① 身份数字前置：「小4w的Ai博主」比「资深设计师」更具体可量化，身份背书用数字锚定；② 反割韭菜是持续人设资产而非一次性钩子：006「不卖课」声明+010反割韭菜三连，反商业化立场反复强化累积信任；③ 主动指路免费平替：推荐官方指南与竞品博主（Nenly同学），慷慨换信任，利他性回流为可信度；④ 学习方法类的收藏动机=存路线图：无可复制资产但结构化学习路径本身驱动收藏，藏比1.28验证「路线型内容」不依赖可复制资产也能顺挂；⑤ 不完美细节是互动资产二次复现：口播病句与口癖不损数据反成讨论素材（与014标题数字不一致同构）
 
 ### 009 | 图片转动画｜Ai帮我1分钟做32个动画｜AIGC
-- 链接：https://www.xiaohongshu.com/explore/65058cfc0000000014027931
+- 链接：https://www.xiaohongshu.com/explore/65058cfc0000000014027931?xsec_token=ABqk5Zn6BKd13f2Tc2inenqrYOY4Cb1m37mn5SucWFHow=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2023-09-16
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：视频（91秒）｜标签：#get职场新知识 #动画 #Ai作画 #AI #animateddrawings #图片转动画 #ae #AIGC #动画制作 #骨骼动画 #AI插画 #我和AI有画说 #midjourney #AI绘画有点东西 #干货 #AI干货 #動画 #表情包 #动画表情包｜@大威（插画素材原创作者）
@@ -141,7 +141,7 @@
 - 可借鉴点：① 单一免费工具教程=赞藏双高唯一形态：国民度/免费度决定受众面天花板，趣味度决定「快去玩」的收藏分享动机，与咒语类垂类题材形成量级差（2.8万 vs 1295~2543）；② 效率数字量化钩子：1分钟×32个动画的产出比值自带冲击力，效率承诺用具体数字锚定而非形容词；③ 91秒工作流展示时长：短视频全流程演示（上传→生成→成片），工作流展示宜短不宜长；④ 素材授权致谢式跨博主互推：正文致谢插画师@大威，授权背书+双向引流双赢；⑤ 免费工具的可访问性障碍要在内容内预判：打不开/地区限制类门槛是这类题材的天然疑问点，内容内预置解决方案比事后答疑有效
 
 ### 008 | 进来拿关键词｜Midjourney涂鸦龙｜MJ十二生肖
-- 链接：https://www.xiaohongshu.com/explore/64f4434e000000001e03242d
+- 链接：https://www.xiaohongshu.com/explore/64f4434e000000001e03242d?xsec_token=ABe2GtveszpHsuox2TOH8U6ySyWFsECz2NHaXfZvL9tk0=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2023-09-03
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：图文（7张竖版图）｜标签：#AI绘画有点东西 #涂鸦 #潮流艺术 #视觉设计 #潮流艺术薯 #创意海报 #十二生肖 #AI插画 #midjourney #我和AI有画说 #mj关键词 #midjourney关键词 #midjourney练习 #mj #Midjourney咒语 #INFJ #龙 #midjourney龙 #涂鸦 #水彩画 #干货分享｜@艺术薯 @数码薯
@@ -151,7 +151,7 @@
 - 可借鉴点：① 指令式钩子：「进来拿关键词」比陈述式（大公开/内附）行动指向更明确，标题即完成取资产的行动指令；② 单图咒语三重门槛压收藏：垫图+指定渲染器+预设一致的高复制门槛让在场咒语失去收藏价值，提示词类内容想保藏比需保复用自由度；③ 旧帖补置顶做系列入口：笔记发布一个月后追加置顶导流全系列，旧笔记持续为系列服务；④ 自评自顶人设位：「宝藏博主」「关注不亏」双自评占引流位，软性自推无导流话术风险
 
 ### 007 | 图文咒语｜12种小众艺术风格｜让Ai绘画更独特
-- 链接：https://www.xiaohongshu.com/explore/64674ce10000000027012536
+- 链接：https://www.xiaohongshu.com/explore/64674ce10000000027012536?xsec_token=AByhP3J2GE079q0vlLkZXDEGDdubp7c9tniU_fHq8C3bU=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2023-05-19
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：图文（13张竖版图：1封面+12张风格咒语卡）｜标签：#搞的就是艺术 #AI插画 #midjourney #我和AI有画说 #Ai绘画 #AI绘画有点的东西 #ai #AI #艺术 #ai关键词 #绘画 #小众 #小众艺术家 #Midjourney #midjourney学习 #midjourney教程 #midjourney关键词 #midjourneyart #stablediffusion #StableDiffusion学习 #干货分享 #干貨 #乾货 #关键词 #艺术家 #视觉艺术 #视觉传达 #视觉设计 #设计 #平面设计 #海报设计 #设计知识 #设计干货 #艺术分享 #每日艺术家 #潮流艺术 #潮流艺术薯 #当代艺术｜@艺术薯 @小红书成长笔记 @潮流薯 @薯队长 @走走薯 @有一说一薯 @小红书创作学院
@@ -161,7 +161,7 @@
 - 可借鉴点：① 系列连载双日连发：同形态清单隔天接棒，第一篇立格式、第二篇验证系列可复制性，连载认知降低单篇理解成本；② 反同质化痛点开场：「千篇一律」归因+「独特」承诺，审美疲劳本身就是选题理由；③ 同系列换受众面变量可单独调点赞/藏比：构图法（专业垂类）藏比1.79/赞1295 vs 艺术风格（审美泛题材）藏比1.26/赞2543，系列内选题可按目标微调受众面；④ 置顶自安利式引流：「宝藏博主」自评自顶是低门槛人设引流位，比硬导流话术软
 
 ### 006 | 图文咒语｜10种基础构图法｜让Ai 出图更准确
-- 链接：https://www.xiaohongshu.com/explore/646607de00000000070388aa
+- 链接：https://www.xiaohongshu.com/explore/646607de00000000070388aa?xsec_token=ABnEFo8cjxFBB0e5wPKKC7Zw3PMHyMRh2_bwc3AoxwZWU=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2023-05-18
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：图文（11张竖版图）｜标签：#每秒都值得记录 #AI插画 #midjourney #我和AI有画说 #ai #AI #AI人工智能 #Ai绘画 #人工智能 #小红书 #Midjourney #MidJourney #midjourney学习 #midjourney教程 #midjourney关键词 #midjourney系列 #AIGC #构图 #构图方法 #摄影构图 #绘画构图分享 #干货分享 #干貨分享 #stablediffusion #stable #stabledifussion #midjourney高清图 #Midjourney提示词 #基础构图｜@小红书成长助手 @薯队长 @数码薯 @知识薯
@@ -171,7 +171,7 @@
 - 可借鉴点：① 清单体×垂类精准×资产在场=藏比顶配：1.79验证三因子叠加是工具书型收藏比的标准配方；② 藏比与点赞的跷跷板：受众精准抬藏比但压点赞天花板（1295 vs 005的1.6万），工具书帖沉淀专业人设、破圈帖冲量级，两类选题按账号阶段目标配比；③ 隐喻包装专业词：「咒语」把提示词/构图术语游戏化，降低认知成本自带传播感；④ 反卖课声明建信任：「我不搞卖课」比「免费」声明更可信，反商业化人设与主页引流形成信任闭环；⑤ 纯资产型无互动爆点：评论比1.4%验证无争议无求取缺口时评论必低，若需互动权重需在清单内埋争议点或留白钩子
 
 ### 005 | 💰用Ai搞钱｜批量生成表情包｜内附收益
-- 链接：https://www.xiaohongshu.com/explore/6452443600000000120327a5
+- 链接：https://www.xiaohongshu.com/explore/6452443600000000120327a5?xsec_token=ABPaMz9r8oAwRf8obtKcKSPIqqijRcoMMFF3JNWOg8sn4=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2023-05-03（05-07编辑）
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：图文（6张图）｜标签：#我的转行初体验 #微信表情包 #微信制作表情包 #表情包 #搞笑表情包 #表情包分享 #表情包制作 #AI插画 #midjourney #我和AI有画说 #套路表情包 #可爱表情包 #奇奇怪怪表情包 #Midjourney #MidJourney #midjourney学习 #midjourney教程 #midjourney表情包教程 #midjourney表情包设计 #AI #ai #干货分享 #干货 #自制表情包 #表情 #微信原创表情包｜@潮流薯 @娱乐薯 @数码薯
@@ -181,7 +181,7 @@
 - 可借鉴点：① 变现承诺钩子抬受众面：「搞钱/内附收益」把受众从学习者扩到所有想赚副业的人，赞藏双万级验证题材天花板；② 收益披露式社会证明：披露真实收益比承诺收益更可信，「内附收益」三字进标题即可；③ 子评论兑现是准在场折中位：资产放作者子评论而非内容内，藏比维持顺挂但低于纯在场——承诺履约位置越近内容内藏比越高；④ 变现可行性质疑是搞钱题材必答题：「人人都能做还挣什么」类质疑必现，内容内预置回应姿态比回避更利于观感；⑤ 续集连载式引流：置顶「第二弹已更新」把单篇流量导成系列追更，搞钱题材天然适合连载（第二弹第三弹预期）
 
 ### 004 | 自学Ai绘画一个月，40万人看了我的作品
-- 链接：https://www.xiaohongshu.com/explore/644e24a7000000001300afc1
+- 链接：https://www.xiaohongshu.com/explore/644e24a7000000001300afc1?xsec_token=ABviwEFJpZcHnhufKdRw056L6XfKOqkBiABLovVkXkpPQ=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2023-04-30
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：视频（33秒，竖屏720×954，作品蒙太奇展示）｜标签：#当然要记录啊 #AI插画 #midjourney #我和AI有画说 #Ai绘画 #AI绘画有点东西 #ai #AI #绘画日常 #Midjourney #MidJourney #midjourney学习 #midjourney教程 #midjourney关键词 #stablediffusion #StableDiffusion #StableDIffusion #做最好的自己 #加油打工人 #打工人日常 #设计 #平面设计 #ui设计｜@数码薯 @视频薯 @人文薯 @艺术薯
@@ -191,7 +191,7 @@
 - 可借鉴点：① 里程碑战报式钩子：「X时间+大数据+第一人称成长」三重结构，社会证明从「别人验证」升级为「自己的真实数据」，可信度更高；② 里程碑帖是账号漏斗的入口：内容本身无资产，用置顶导流至首页资产系列，点赞拉新、教程留存的分工结构；③ 成长叙事题材抬点赞天花板：9659 vs 教程题材1095~2815，同一账号内题材决定量级上限，但收藏仍看资产在场；④ 置顶导流一句完成漏斗交接：「从《Ai绘画第一步》看起」单条置顶即把提问流量导向系列入口
 
 ### 003 | 💞Ai漫画｜少女的勇气｜复古漫画关键词
-- 链接：https://www.xiaohongshu.com/explore/64293f060000000013006ef8
+- 链接：https://www.xiaohongshu.com/explore/64293f060000000013006ef8?xsec_token=AB7yFTzgAYWE5uikZT6jeU92_Z-u6RGZBodGMiTLo48gk=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2023-04-02
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：图文（8张竖版图，1080×1434）｜标签：#AI插画 #midjourney #我和AI有画说 #漫画 #ai #复古 #AI #AI绘画有点东西 #美式复古 #Ai绘画 #midjourney学习 #midjourney关键词 #midjourney教程 #AIGC｜@潮流薯 @电影薯 @数码薯 @薯管家 @薯队长 @人文薯 @视频薯 @小红书创作学院 @艺术薯 @知识薯 @小红书成长助手 @小红叔
@@ -201,7 +201,7 @@
 - 可借鉴点：① 情绪价值观题材抬点赞不抬收藏：「女性力量」类议题包装把点赞托上破千门槛，但收藏仍看资产在场——情绪钩子与资产交付需分开设计；② 资产外置即倒挂的同博主三样本验证：1.38/1.17顺挂→0.88倒挂，交付位置是唯一变量；③ AI生成题材自带局限性质疑红利：人物一致性/风格统一等讨论把评论做成专业探讨现场，质疑讨论反哺互动权重；④ 关键词外置引流三通道：置顶外置+粉丝群预告+新内容导流——外置资产转化为私域与新内容入口，代价是藏比；⑤ 多官方薯@铺量的早期打法：12个官方账号@是早期笔记抢推荐位的时代打法，现行效度存疑
 
 ### 002 | 🔥Ai教程｜MJ生成不同职业的潮流ip形象
-- 链接：https://www.xiaohongshu.com/explore/6416e36c0000000013007a14
+- 链接：https://www.xiaohongshu.com/explore/6416e36c0000000013007a14?xsec_token=ABGGoOQ7F6-q38mdp5mDwtCXGzPGXduMoVeN6zzL_ZcmE=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2023-03-19
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：图文（12张竖版图）｜标签：#AI插画 #midjourney #我和AI有画说 #教程 #Ai插画 #Ai绘画 #Midjourney #midjourney学习 #midjourney教程 #midjourneybot #3D #IP #ip #个人ip #IP设计 #C4D #OC #oc #blender #Blender #BLENDER
@@ -211,7 +211,7 @@
 - 可借鉴点：① 「万能句式」式资产封装：把多次试错经验压成一套可替换关键词的模板，交付成本最低、复用性最高，是收藏动机最强的资产形态；② 多案例矩阵展示复用性：「一份句式N种产出」用多职业形象矩阵证明模板通用性，受众面随案例覆盖的职业数扩大；③ 系列联动双篇结构：结果篇（给模板）置顶引流至思路篇（讲方法论），互为导流延长生命周期；④ 图文干货的信息分工：干货放图内、正文只放省流预告（「万能句式在文末」），完读图即完成交付；⑤ 模板vs方法论的收藏形态分化：模板藏比略低（1.17）但收藏绝对量与分享更高，方法论藏比更高（1.38）——两种资产形态各赢一头，系列内可兼用
 
 ### 001 | 🔥Ai教程｜潮流ip设计方法思路大公开
-- 链接：https://www.xiaohongshu.com/explore/641ea240000000001303c70f
+- 链接：https://www.xiaohongshu.com/explore/641ea240000000001303c70f?xsec_token=ABjkuVKkGnp4hjWWUYQmxA7df4Nf-lNi2poqNELGsbP8c=&xsec_source=pc_user
 - 录入日期：2026-08-19｜发布：2023-03-25
 - 平台：小红书｜博主：未来设计师KiK
 - 形式：图文（10张竖版图，1080×1434）｜标签：#AI插画 #midjourney #我和AI有画说 #AI绘画有点东西 #设计教程 #潮流薯 #设计 #海报设计 #midjourney学习 #C4D #OC #blender #AIGC #ip #IP设计 #潮玩 #潮流玩具 #潮玩手办 #midjourney关键词｜@数码薯
