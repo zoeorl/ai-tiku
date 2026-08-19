@@ -59,7 +59,10 @@ function parseEntries(md, source) {
     const share = parseNum((interact.match(/分享\s*([\d.]+万?)/) || [])[1]);
 
     const formLine = get(/^- 形式：(.+)$/m);
-    const link = get(/^- 链接：(\S+)/m);
+    // 链接归一化：App 深链 /user/profile/UID/NID 与旧路由 /discovery/item/ 在网页端会触发 300031，统一转 /explore/NID
+    const link = get(/^- 链接：(\S+)/m)
+      .replace(/xiaohongshu\.com\/user\/profile\/[0-9a-fA-F]+\/([0-9a-fA-F]+)/i, 'xiaohongshu.com/explore/$1')
+      .replace('/discovery/item/', '/explore/');
     const date = get(/发布：(\d{4}-\d{2}-\d{2})/);
     const blogger = get(/｜博主：(.+)$/m);
     const tags = (get(/｜标签：(.+)$/m) || '').split(/\s+/).map(t => t.replace(/^#/, '')).filter(Boolean);
