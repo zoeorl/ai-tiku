@@ -1,9 +1,25 @@
-/* ============ 数据源：md 单一数据源 ============ */
-const SOURCES = [
-  { file: '../01-清华姜学长.md', short: '姜' },
-  { file: '../02-黄白.md', short: '黄' },
-];
+/* ============ 数据源：清单驱动，md 单一数据源 ============ */
+/* 新增博主：建专册 md + 在 bloggers.json 加一行，无需改代码 */
+const MANIFEST_FILE = 'bloggers.json';
 const RULES_FILE = '../00-总览与跨博主规律.md';
+let SOURCES = [];
+
+/* 博主色板：按清单顺序自动分配，前三色兼容旧版 */
+const PALETTE = [
+  ['var(--accent-soft)', 'var(--accent)'],
+  ['#e8f0fb', '#2f6bc4'],
+  ['#f3eafb', '#7a3fb8'],
+  ['var(--green-soft)', 'var(--green)'],
+  ['var(--amber-soft)', 'var(--amber)'],
+  ['#e0f2f1', '#1f7a72'],
+  ['#fbe8f0', '#c2417f'],
+  ['#efece6', '#6b665c'],
+];
+const _colorIdx = {};
+function colorOf(name) {
+  if (!(name in _colorIdx)) _colorIdx[name] = Object.keys(_colorIdx).length % PALETTE.length;
+  return PALETTE[_colorIdx[name]];
+}
 
 /* ============ 工具函数 ============ */
 function parseNum(s) {
@@ -124,13 +140,13 @@ function ratioChip(label, v, kind) {
 }
 
 function cardHtml(e) {
-  const bloggerCls = e.short === '姜' ? 'blogger-a' : 'blogger-b';
+  const [bcBg, bcFg] = colorOf(e.blogger);
   const typeShort = e.type.split(/（|\(/)[0];
   return `
   <article class="card">
     <div class="card-head">
       <div class="badges">
-        <span class="badge ${bloggerCls}">${e.blogger} · ${e.id}</span>
+        <span class="badge" style="background:${bcBg};color:${bcFg}">${e.blogger} · ${e.id}</span>
         <span class="badge type">${typeShort}</span>
         ${e.form ? `<span class="badge form">${e.form.split('｜')[0]}</span>` : ''}
       </div>
@@ -190,9 +206,12 @@ function renderBoards(all) {
 
 /* ============ 主流程 ============ */
 let ALL = [];
-const state = { q: '', blogger: '', type: '', form: '', sort: 'date' };
+const PAGE_SIZE = 30;
+const state = { q: '', blogger: '', type: '', form: '', sort: 'date', shown: PAGE_SIZE };
+let currentList = [];
 
-function applyFilters() {
+function applyFilters(resetPage = true) {
+  if (resetPage) state.shown = PAGE_SIZE;
   const q = state.q.toLowerCase();
   let list = ALL.filter(e => {
     if (state.blogger && e.blogger !== state.blogger) return false;
@@ -214,10 +233,8 @@ function applyFilters() {
     shareRatio: (a, b) => (b.shareRatio ?? -1) - (a.shareRatio ?? -1),
   };
   list.sort(sorters[state.sort]);
-
-  const grid = document.getElementById('grid');
-  grid.innerHTML = list.map(cardHtml).join('');
-  document.getElementById('empty').hidden = list.length > 0;
+  currentList = list;
+  renderGrid();
 
   const totLike = list.reduce((s, e) => s + (e.like || 0), 0);
   const totFav = list.reduce((s, e) => s + (e.fav || 0), 0);
@@ -226,20 +243,114 @@ function applyFilters() {
     `共 <b>${list.length}</b> 条 · 覆盖 <b>${bloggers}</b> 位博主 · 合计点赞 <b>${fmt(totLike)}</b> · 合计收藏 <b>${fmt(totFav)}</b>`;
 }
 
-function initChips() {
-  const box = document.getElementById('bloggerChips');
-  const bloggers = [...new Set(ALL.map(e => e.blogger))];
-  const chips = ['<button class="chip active" data-b="">全部博主</button>']
-    .concat(bloggers.map(b => `<button class="chip" data-b="${b}">${b}</button>`));
-  box.innerHTML = chips.join('');
-  box.addEventListener('click', ev => {
-    const c = ev.target.closest('.chip');
-    if (!c) return;
-    box.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
-    c.classList.add('active');
-    state.blogger = c.dataset.b;
+function renderGrid() {
+  const list = currentList;
+  document.getElementById('grid').innerHTML = list.slice(0, state.shown).map(cardHtml).join('');
+  document.getElementById('empty').hidden = list.length > 0;
+  const left = list.length - state.shown;
+  const more = document.getElementById('loadMore');
+  more.hidden = left <= 0;
+  if (left > 0) more.textContent = `加载更多条目（还剩 ${left} 条）`;
+}
+
+/* ============ 博主统计（下拉与总览共用） ============ */
+function bloggerStats() {
+  const m = new Map();
+  for (const e of ALL) {
+    let s = m.get(e.blogger);
+    if (!s) { s = { name: e.blogger, n: 0, like: 0, fav: 0, ratios: [] }; m.set(e.blogger, s); }
+    s.n++;
+    s.like += e.like || 0;
+    s.fav += e.fav || 0;
+    if (e.favRatio !== null) s.ratios.push(e.favRatio);
+  }
+  const arr = [...m.values()];
+  for (const s of arr) {
+    s.ratios.sort((a, b) => a - b);
+    s.medFavRatio = s.ratios.length ? s.ratios[Math.floor(s.ratios.length / 2)] : null;
+    s.top = ALL.filter(e => e.blogger === s.name).sort((a, b) => (b.like || 0) - (a.like || 0))[0];
+  }
+  return arr.sort((a, b) => b.like - a.like);
+}
+
+/* ============ 博主下拉选择器（可搜索，撑得住数百位博主） ============ */
+function syncBloggerBtn() {
+  const btn = document.getElementById('bloggerBtn');
+  btn.innerHTML = state.blogger
+    ? `${escapeHtml(state.blogger)}<span class="cnt">${ALL.filter(e => e.blogger === state.blogger).length} 条</span> ▾`
+    : `全部博主<span class="cnt">${ALL.length} 条</span> ▾`;
+}
+
+function renderBloggerList(filter = '') {
+  const stats = bloggerStats();
+  const f = filter.trim().toLowerCase();
+  const rows = stats.filter(s => !f || s.name.toLowerCase().includes(f));
+  document.getElementById('bloggerList').innerHTML =
+    `<div class="bselect-row ${state.blogger === '' ? 'active' : ''}" data-b="">全部博主<span class="n">${ALL.length} 条</span></div>` +
+    rows.map(s => `<div class="bselect-row ${state.blogger === s.name ? 'active' : ''}" data-b="${escapeHtml(s.name)}"><span><i class="dot" style="background:${colorOf(s.name)[1]}"></i>${escapeHtml(s.name)}</span><span class="n">${s.n} 条</span></div>`).join('');
+}
+
+function initBloggerSelect() {
+  const panel = document.getElementById('bloggerPanel');
+  const input = document.getElementById('bloggerSearch');
+  syncBloggerBtn();
+  renderBloggerList();
+  document.getElementById('bloggerBtn').addEventListener('click', ev => {
+    ev.stopPropagation();
+    panel.hidden = !panel.hidden;
+    if (!panel.hidden) { input.value = ''; renderBloggerList(); input.focus(); }
+  });
+  input.addEventListener('input', () => renderBloggerList(input.value));
+  input.addEventListener('click', ev => ev.stopPropagation());
+  panel.addEventListener('click', ev => ev.stopPropagation());
+  document.getElementById('bloggerList').addEventListener('click', ev => {
+    const row = ev.target.closest('.bselect-row');
+    if (!row) return;
+    state.blogger = row.dataset.b;
+    panel.hidden = true;
+    syncBloggerBtn();
     applyFilters();
   });
+  document.addEventListener('click', () => { panel.hidden = true; });
+}
+
+/* ============ 博主总览 ============ */
+function renderBloggers() {
+  const stats = bloggerStats();
+  document.getElementById('bloggerStatsLine').innerHTML =
+    `已收录 <b>${stats.length}</b> 位博主 · <b>${ALL.length}</b> 条验证爆款 · 点卡片看该博主全部条目`;
+  document.getElementById('bloggerGrid').innerHTML = stats.map(s => {
+    const [bg, fg] = colorOf(s.name);
+    return `
+    <button class="bcard" data-b="${escapeHtml(s.name)}">
+      <div class="bcard-head">
+        <span class="dot" style="background:${fg}"></span>
+        <span class="name">${escapeHtml(s.name)}</span>
+        <span class="cnt" style="background:${bg};color:${fg}">${s.n} 条</span>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="v">${fmt(s.like)}</div><div class="k">总赞</div></div>
+        <div class="metric"><div class="v">${fmt(s.fav)}</div><div class="k">总藏</div></div>
+        <div class="metric"><div class="v">${s.medFavRatio !== null ? s.medFavRatio.toFixed(2) : '—'}</div><div class="k">藏比中位</div></div>
+      </div>
+      <div class="bcard-top">👑 ${s.top ? escapeHtml(s.top.title) : ''}</div>
+    </button>`;
+  }).join('');
+  document.getElementById('bloggerGrid').addEventListener('click', ev => {
+    const c = ev.target.closest('.bcard');
+    if (!c) return;
+    gotoBlogger(c.dataset.b);
+  });
+}
+
+function gotoBlogger(name) {
+  state.blogger = name;
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.tab === 'library'));
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-library').classList.add('active');
+  syncBloggerBtn();
+  applyFilters();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function initTabs() {
@@ -255,6 +366,7 @@ function initTabs() {
 
 async function init() {
   try {
+    SOURCES = await (await fetch(MANIFEST_FILE)).json();
     const results = await Promise.all(SOURCES.map(async s => {
       const res = await fetch(s.file);
       if (!res.ok) throw new Error(s.file);
@@ -262,7 +374,8 @@ async function init() {
     }));
     ALL = results.flat();
 
-    initChips();
+    initBloggerSelect();
+    renderBloggers();
     initTabs();
     document.getElementById('boards').innerHTML = renderBoards(ALL);
 
@@ -276,6 +389,7 @@ async function init() {
     document.getElementById('typeFilter').addEventListener('change', ev => { state.type = ev.target.value; applyFilters(); });
     document.getElementById('formFilter').addEventListener('change', ev => { state.form = ev.target.value; applyFilters(); });
     document.getElementById('sortSelect').addEventListener('change', ev => { state.sort = ev.target.value; applyFilters(); });
+    document.getElementById('loadMore').addEventListener('click', () => { state.shown += PAGE_SIZE; renderGrid(); });
     document.getElementById('grid').addEventListener('click', ev => {
       const tag = ev.target.closest('.tag');
       if (!tag) return;
