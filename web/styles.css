@@ -316,8 +316,70 @@ details.analysis .body .lbl { font-weight: 700; color: var(--ink); }
 
 .foot { text-align: center; color: var(--sub); font-size: 12px; padding: 20px 0 40px; }
 
+/* ============ 内容拆解弹窗 ============ */
+.bd-btn {
+  margin-top: 10px; width: 100%; cursor: pointer; font: inherit; font-size: 12.5px;
+  color: var(--accent); background: var(--accent-soft);
+  border: 1px solid rgba(230, 73, 61, .18); border-radius: 8px; padding: 6px 10px;
+  transition: background .15s;
+}
+.bd-btn:hover { background: #fbddd7; }
+
+.modal { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.modal[hidden] { display: none; }
+.modal-mask { position: absolute; inset: 0; background: rgba(28, 26, 23, .45); }
+.modal-panel {
+  position: relative; width: min(720px, 100%); max-height: 86vh; overflow-y: auto;
+  background: var(--card); border-radius: 16px; box-shadow: 0 24px 64px rgba(28, 26, 23, .28);
+}
+.modal-close {
+  position: sticky; top: 12px; float: right; margin: 12px 12px 0 0; z-index: 1;
+  width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line);
+  background: var(--card); color: var(--sub); font-size: 18px; line-height: 1; cursor: pointer;
+}
+.modal-close:hover { color: var(--ink); background: var(--bg); }
+.modal-body { padding: 28px 32px 32px; }
+
+.m-head { padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.m-head .badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.m-head h2 { font-size: 20px; line-height: 1.4; }
+.m-meta { margin-top: 6px; color: var(--sub); font-size: 12.5px; }
+.m-link {
+  display: inline-block; margin-top: 10px; font-size: 12.5px; font-weight: 600;
+  color: var(--accent); text-decoration: none;
+  background: var(--accent-soft); border-radius: 8px; padding: 5px 12px;
+}
+.m-link:hover { background: #fbddd7; }
+
+.m-sec { margin-top: 20px; }
+.m-sec h3 { font-size: 14px; margin-bottom: 10px; }
+.m-sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.m-sec-head h3 { margin-bottom: 0; }
+.m-copy {
+  cursor: pointer; font: inherit; font-size: 12px; color: var(--sub);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 4px 12px;
+}
+.m-copy:hover { color: var(--ink); }
+
+.m-structure { list-style: none; display: grid; gap: 8px; }
+.m-structure li {
+  position: relative; padding: 9px 12px 9px 26px; font-size: 13px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+}
+.m-structure li::before { content: "▸"; position: absolute; left: 12px; color: var(--accent); }
+
+.m-script {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 12px;
+  padding: 16px 18px; max-height: 46vh; overflow-y: auto;
+}
+.m-script p { font-size: 13px; line-height: 1.85; }
+.m-script p + p { margin-top: 10px; }
+
 @media (max-width: 640px) {
   .metrics { grid-template-columns: repeat(4, 1fr); }
   .rgroup { flex-wrap: wrap; }
   .rgroup .rtags { margin-left: 0; }
+  .modal { padding: 0; }
+  .modal-panel { width: 100%; max-height: 100vh; border-radius: 0; }
+  .modal-body { padding: 20px 18px 28px; }
 }

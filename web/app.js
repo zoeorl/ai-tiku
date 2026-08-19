@@ -64,9 +64,25 @@ function parseEntries(md, source) {
       .replace(/xiaohongshu\.com\/user\/profile\/[0-9a-fA-F]+\/([0-9a-fA-F]+)/i, 'xiaohongshu.com/explore/$1')
       .replace('/discovery/item/', '/explore/');
     const date = get(/发布：(\d{4}-\d{2}-\d{2})/);
-    const blogger = get(/｜博主：(.+)$/m);
-    const tags = (get(/｜标签：(.+)$/m) || '').split(/\s+/).map(t => t.replace(/^#/, '')).filter(Boolean);
+    const blogger = get(/｜\s*博主：([^｜]+?)(?=\s*｜|$)/m);
+    const tags = (get(/｜\s*标签：([^｜]+?)(?=\s*｜|$)/m) || '').split(/\s+/).map(t => t.replace(/^#/, '')).filter(Boolean);
     const type = get(/^- 内容类型：(.+)$/m);
+
+    // 可选多行字段：内容结构（缩进 bullet）与逐字稿（> 引用，原文照录）
+    const sectionLines = header => {
+      const lines = content.split('\n');
+      const out = []; let on = false;
+      for (const l of lines) {
+        if (!on) { if (l.startsWith(`- ${header}：`)) on = true; continue; }
+        if (/^- \S/.test(l)) break;
+        out.push(l);
+      }
+      return out;
+    };
+    const structure = sectionLines('内容结构')
+      .map(l => l.trim()).filter(l => l.startsWith('- ')).map(l => l.slice(2));
+    const script = sectionLines('逐字稿')
+      .map(l => l.trim()).filter(l => l.startsWith('>')).map(l => l.replace(/^>\s?/, ''));
 
     out.push({
       id, title, link, date, blogger,
@@ -80,6 +96,7 @@ function parseEntries(md, source) {
       shareRatio: like && share !== null ? share / like : null,
       reason: get(/^- 爆款原因：(.+)$/m),
       tips: get(/^- 可借鉴点：(.+)$/m),
+      structure, script,
       _text: '',
     });
   }
@@ -270,6 +287,7 @@ function cardHtml(e) {
       ${ratioChip('分享比', e.shareRatio, 'pct')}
     </div>
     <div class="tags">${e.tags.map(t => `<span class="tag" data-tag="${escapeHtml(t)}">#${escapeHtml(t)}</span>`).join('')}</div>
+    ${(e.structure.length || e.script.length) ? `<button class="bd-btn" type="button" data-b="${escapeHtml(e.blogger)}" data-id="${escapeHtml(e.id)}">📖 内容拆解</button>` : ''}
     <details class="analysis">
       <summary>爆款原因 · 可借鉴点</summary>
       <div class="body">
@@ -278,6 +296,48 @@ function cardHtml(e) {
       </div>
     </details>
   </article>`;
+}
+
+/* ============ 内容拆解弹窗 ============ */
+function openBreakdown(e) {
+  const modal = document.getElementById('modal');
+  const [bcBg, bcFg] = colorOf(e.blogger);
+  const interact = [e.like !== null && `赞 ${fmt(e.like)}`, e.fav !== null && `藏 ${fmt(e.fav)}`, e.com !== null && `评 ${fmt(e.com)}`, e.share !== null && `享 ${fmt(e.share)}`].filter(Boolean).join(' · ');
+  const scriptRaw = e.script.join('\n');
+  document.getElementById('modalBody').innerHTML = `
+    <div class="m-head">
+      <div class="badges">
+        <span class="badge" style="background:${bcBg};color:${bcFg}">${escapeHtml(e.blogger)} · ${escapeHtml(e.id)}</span>
+        ${e.form ? `<span class="badge form">${escapeHtml(e.form.split('｜')[0])}</span>` : ''}
+        <span class="badge type">${escapeHtml(e.type.split(/（|\(/)[0])}</span>
+      </div>
+      <h2>${escapeHtml(e.title)}</h2>
+      <div class="m-meta">${escapeHtml(e.date || '日期未知')}｜${escapeHtml(interact)}</div>
+      <a class="m-link" href="${e.link}" target="_blank" rel="noopener">打开原笔记 ↗</a>
+    </div>
+    ${e.structure.length ? `
+    <div class="m-sec">
+      <h3>内容结构</h3>
+      <ul class="m-structure">${e.structure.map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ul>
+    </div>` : ''}
+    ${e.script.length ? `
+    <div class="m-sec">
+      <div class="m-sec-head"><h3>逐字稿</h3><button class="m-copy" type="button">一键复制</button></div>
+      <div class="m-script">${e.script.map(p => p ? `<p>${escapeHtml(p)}</p>` : '').join('')}</div>
+    </div>` : ''}
+  `;
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  const copyBtn = document.querySelector('.m-copy');
+  if (copyBtn) copyBtn.addEventListener('click', () => {
+    const done = () => { copyBtn.textContent = '已复制 ✓'; setTimeout(() => { copyBtn.textContent = '一键复制'; }, 1500); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(scriptRaw).then(done).catch(done);
+    else { const ta = document.createElement('textarea'); ta.value = scriptRaw; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); done(); }
+  });
+}
+function closeModal() {
+  document.getElementById('modal').hidden = true;
+  document.body.style.overflow = '';
 }
 
 /* ============ 榜单渲染 ============ */
@@ -322,7 +382,7 @@ function applyFilters(resetPage = true) {
     if (state.form === '视频' && !e.isVideo) return false;
     if (state.form === '图文' && e.isVideo) return false;
     if (q) {
-      const hay = [e.title, e.type, e.reason, e.tips, e.tags.join(' ')].join(' ').toLowerCase();
+      const hay = [e.title, e.type, e.reason, e.tips, e.tags.join(' '), e.structure.join(' '), e.script.join(' ')].join(' ').toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
@@ -493,7 +553,16 @@ async function init() {
     document.getElementById('formFilter').addEventListener('change', ev => { state.form = ev.target.value; applyFilters(); });
     document.getElementById('sortSelect').addEventListener('change', ev => { state.sort = ev.target.value; applyFilters(); });
     document.getElementById('loadMore').addEventListener('click', () => { state.shown += PAGE_SIZE; renderGrid(); });
+    document.getElementById('modalMask').addEventListener('click', closeModal);
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.addEventListener('keydown', ev => { if (ev.key === 'Escape') closeModal(); });
     document.getElementById('grid').addEventListener('click', ev => {
+      const bd = ev.target.closest('.bd-btn');
+      if (bd) {
+        const e = ALL.find(x => x.blogger === bd.dataset.b && x.id === bd.dataset.id);
+        if (e) openBreakdown(e);
+        return;
+      }
       const tag = ev.target.closest('.tag');
       if (!tag) return;
       const s = document.getElementById('search');
