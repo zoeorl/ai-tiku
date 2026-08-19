@@ -177,6 +177,29 @@ details.analysis[open] summary::before { content: "▾ "; }
 details.analysis .body { margin-top: 8px; font-size: 12.5px; color: #4a463f; }
 details.analysis .body p { margin-bottom: 8px; }
 details.analysis .body .lbl { font-weight: 700; color: var(--ink); }
+details.analysis .blk { margin-bottom: 10px; }
+details.analysis .blk:last-child { margin-bottom: 0; }
+details.analysis .blk-t {
+  display: inline-block; font-size: 11px; font-weight: 700; color: var(--accent);
+  background: var(--accent-soft); padding: 2px 8px; border-radius: 5px; margin-bottom: 6px;
+}
+details.analysis ul.reason-list, details.analysis ol.tips-list {
+  margin: 0; padding-left: 2px; display: flex; flex-direction: column; gap: 4px;
+  list-style: none; line-height: 1.65;
+}
+details.analysis ul.reason-list li { padding-left: 14px; position: relative; }
+details.analysis ul.reason-list li::before {
+  content: ""; position: absolute; left: 3px; top: 8px;
+  width: 5px; height: 5px; border-radius: 50%; background: var(--accent); opacity: .55;
+}
+details.analysis ul.reason-list .x {
+  color: var(--accent); font-weight: 700; padding: 0 1px;
+}
+details.analysis ol.tips-list li { padding-left: 20px; position: relative; }
+details.analysis ol.tips-list .num {
+  position: absolute; left: 0; top: 0; color: var(--accent); font-weight: 700;
+}
+details.analysis ol.tips-list strong { color: var(--ink); }
 
 .empty { text-align: center; color: var(--sub); padding: 60px 0; font-size: 14px; }
 

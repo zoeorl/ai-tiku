@@ -253,6 +253,32 @@ function renderRulesVisual(md) {
 }
 
 /* ============ 卡片渲染 ============ */
+// 爆款原因可视化：按 ；拆成要点行，「×」钩子连接符高亮
+function reasonHtml(reason) {
+  const segs = reason.split(/；/).map(s => s.trim()).filter(Boolean);
+  const rows = segs.map(s => {
+    let h = escapeHtml(s);
+    h = h.replace(/×/g, '<span class="x">×</span>');
+    return `<li>${h}</li>`;
+  });
+  return `<ul class="reason-list">${rows.join('')}</ul>`;
+}
+// 可借鉴点可视化：按 ①②③④⑤⑥ 拆成编号列表，公式名（首个「：」前）加粗
+function tipsHtml(tips) {
+  const items = tips.split(/(?=[①②③④⑤⑥⑦⑧⑨])/).map(s => s.trim()).filter(Boolean);
+  const rows = items.map(s => {
+    const m = s.match(/^[①②③④⑤⑥⑦⑧⑨]\s*/);
+    const num = m ? m[0].trim() : '';
+    const body = m ? s.slice(m[0].length) : s;
+    const i = body.indexOf('：');
+    const inner = (i > 0 && i <= 28)
+      ? `<strong>${escapeHtml(body.slice(0, i))}：</strong>${escapeHtml(body.slice(i + 1))}`
+      : escapeHtml(body);
+    return `<li>${num ? `<span class="num">${num}</span>` : ''}${inner}</li>`;
+  });
+  return `<ol class="tips-list">${rows.join('')}</ol>`;
+}
+
 function ratioChip(label, v, kind) {
   if (v === null) return '';
   let cls = 'mid', txt;
@@ -293,8 +319,8 @@ function cardHtml(e) {
     <details class="analysis">
       <summary>爆款原因 · 可借鉴点</summary>
       <div class="body">
-        ${e.reason ? `<p><span class="lbl">爆款原因</span>：${escapeHtml(e.reason)}</p>` : ''}
-        ${e.tips ? `<p><span class="lbl">可借鉴点</span>：${escapeHtml(e.tips)}</p>` : ''}
+        ${e.reason ? `<div class="blk"><div class="blk-t">爆款原因</div>${reasonHtml(e.reason)}</div>` : ''}
+        ${e.tips ? `<div class="blk"><div class="blk-t">可借鉴点</div>${tipsHtml(e.tips)}</div>` : ''}
       </div>
     </details>
   </article>`;
