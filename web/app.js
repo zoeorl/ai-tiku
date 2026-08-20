@@ -263,20 +263,20 @@ function hlNum(h) {
     .replace(/(0\d{2})|(\d+(?:\.\d+)?(?:万|%|倍|秒|分钟|分)?)/g,
       (m, ref, num) => ref ? `<span class="r-ref">${ref}</span>` : `<b class="r-num">${num}</b>`);
 }
+// 爆款原因可视化：统一「图标瓦片+圆点行」——钩子段按×拆多行，数据/对照/备注同款行式
 function reasonHtml(reason) {
   const segs = reason.split(/；/).map(s => s.trim()).filter(Boolean);
   const rows = segs.map(s => {
     if (s.includes('×')) {
-      const chips = s.split(/×/).map(f => f.trim()).filter(Boolean)
-        .map(f => `<span class="r-chip">${hlNum(escapeHtml(f))}</span>`)
-        .join('<span class="r-x">×</span>');
-      return `<li class="r-hook"><span class="r-ico">🎯</span><span class="r-body">${chips}</span></li>`;
+      const items = s.split(/×/).map(f => f.trim()).filter(Boolean)
+        .map(f => `<div class="r-item">${hlNum(escapeHtml(f))}</div>`).join('');
+      return `<li class="r-hook"><span class="r-ico">��</span><div class="r-body">${items}</div></li>`;
     }
     const isCmp = /0\d{2}|对照|验证|再确认|印证|假设|定律|定律再|首条|系列/.test(s);
     const isData = /收藏|点赞|评论|分享|比值|梯队|全库/.test(s) && /\d/.test(s);
     const kind = isCmp ? 'cmp' : (isData ? 'data' : 'note');
     const ico = isCmp ? '🔗' : (isData ? '📊' : '▸');
-    return `<li class="r-${kind}"><span class="r-ico">${ico}</span><span class="r-body">${hlNum(escapeHtml(s))}</span></li>`;
+    return `<li class="r-${kind}"><span class="r-ico">${ico}</span><div class="r-body"><div class="r-item">${hlNum(escapeHtml(s))}</div></div></li>`;
   });
   return `<ul class="reason-list">${rows.join('')}</ul>`;
 }
