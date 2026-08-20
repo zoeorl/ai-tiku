@@ -310,7 +310,7 @@ function coverHtml(e) {
   return `
     <div class="card-cover">
       <a href="${e.link}" target="_blank" rel="noopener" title="点击打开原笔记">
-        <img src="../covers/${key}.jpg" alt="${escapeHtml(e.title)} 封面" loading="lazy"
+        <img src="../covers/${key}.webp" alt="${escapeHtml(e.title)} 封面" loading="lazy" decoding="async"
              onerror="this.closest('.card-cover').remove()">
       </a>
       ${e.coverNote ? `<div class="cover-note"><span class="cn-ico">🔍</span>${escapeHtml(e.coverNote)}</div>` : ''}
