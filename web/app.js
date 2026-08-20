@@ -89,6 +89,8 @@ function parseEntries(md, source) {
     out.push({
       id, title, link, date, blogger,
       short: source.short,
+      book: ((source.file || '').match(/(\d{2})-/) || [])[1] || '',
+      coverNote: get(/^- 封面分析：(.+)$/m),
       form: formLine,
       isVideo: /^视频/.test(formLine),
       tags, type,
@@ -302,6 +304,20 @@ function ratioChip(label, v, kind) {
   return `<span class="ratio ${cls}">${txt}</span>`;
 }
 
+// 封面图：covers/{专册前缀}-{编号}.jpg 命名约定，加载失败整块移除
+function coverHtml(e) {
+  if (!e.book) return '';
+  const key = e.book + '-' + e.id;
+  return `
+    <div class="card-cover">
+      <a href="${e.link}" target="_blank" rel="noopener" title="点击打开原笔记">
+        <img src="../covers/${key}.jpg" alt="${escapeHtml(e.title)} 封面" loading="lazy"
+             onerror="this.closest('.card-cover').remove()">
+      </a>
+      ${e.coverNote ? `<div class="cover-note"><span class="cn-ico">🔍</span>${escapeHtml(e.coverNote)}</div>` : ''}
+    </div>`;
+}
+
 function cardHtml(e) {
   const [bcBg, bcFg] = colorOf(e.blogger);
   const typeShort = e.type.split(/（|\(/)[0];
@@ -318,6 +334,7 @@ function cardHtml(e) {
       <a href="${e.link}" target="_blank" rel="noopener" title="点击直接打开原笔记">${escapeHtml(e.title)}</a>
       <div class="card-meta">${e.date || '日期未知'}</div>
     </div>
+    ${coverHtml(e)}
     <div class="metrics">
       <div class="metric"><div class="v">${fmt(e.like)}</div><div class="k">赞</div></div>
       <div class="metric"><div class="v">${fmt(e.fav)}</div><div class="k">藏</div></div>
