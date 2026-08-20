@@ -473,6 +473,7 @@ function applyFilters(resetPage = true) {
   const bloggers = [...new Set(list.map(e => e.blogger))].length;
   document.getElementById('stats').innerHTML =
     `共 <b>${list.length}</b> 条 · 覆盖 <b>${bloggers}</b> 位博主 · 合计点赞 <b>${fmt(totLike)}</b> · 合计收藏 <b>${fmt(totFav)}</b>`;
+  syncHash();
 }
 
 function renderGrid() {
@@ -503,6 +504,31 @@ function bloggerStats() {
     s.top = ALL.filter(e => e.blogger === s.name).sort((a, b) => (b.like || 0) - (a.like || 0))[0];
   }
   return arr.sort((a, b) => b.like - a.like);
+}
+
+/* ============ 筛选状态 ⇄ URL hash（刷新保留、链接可分享） ============ */
+function syncHash() {
+  const p = new URLSearchParams();
+  if (state.blogger) p.set('b', state.blogger);
+  if (state.type) p.set('t', state.type);
+  if (state.form) p.set('f', state.form);
+  if (state.sort && state.sort !== 'date') p.set('s', state.sort);
+  if (state.q) p.set('q', state.q);
+  const h = p.toString();
+  history.replaceState(null, '', h ? '#' + h : location.pathname + location.search);
+}
+
+function restoreFromHash() {
+  if (!location.hash) return;
+  const p = new URLSearchParams(location.hash.slice(1));
+  state.blogger = p.get('b') || '';
+  state.q = p.get('q') || '';
+  document.getElementById('search').value = state.q;
+  const setSel = (id, v) => { const el = document.getElementById(id); el.value = v; return el.value; };
+  state.type = setSel('typeFilter', p.get('t') || '');
+  state.form = setSel('formFilter', p.get('f') || '');
+  state.sort = setSel('sortSelect', p.get('s') || 'date') || 'date';
+  if (!state.sort) { state.sort = 'date'; document.getElementById('sortSelect').value = 'date'; }
 }
 
 /* ============ 博主下拉选择器（可搜索，撑得住数百位博主） ============ */
@@ -606,6 +632,7 @@ async function init() {
     }));
     ALL = results.flat();
 
+    restoreFromHash();
     initBloggerSelect();
     renderBloggers();
     initTabs();
