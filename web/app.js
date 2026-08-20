@@ -270,13 +270,12 @@ function reasonHtml(reason) {
     if (s.includes('×')) {
       const items = s.split(/×/).map(f => f.trim()).filter(Boolean)
         .map(f => `<div class="r-item">${hlNum(escapeHtml(f))}</div>`).join('');
-      return `<li class="r-hook"><span class="r-ico">��</span><div class="r-body">${items}</div></li>`;
+      return `<li class="r-hook"><span class="r-ico">🎯</span><div class="r-body">${items}</div></li>`;
     }
     const isCmp = /0\d{2}|对照|验证|再确认|印证|假设|定律|定律再|首条|系列/.test(s);
     const isData = /收藏|点赞|评论|分享|比值|梯队|全库/.test(s) && /\d/.test(s);
     const kind = isCmp ? 'cmp' : (isData ? 'data' : 'note');
-    const ico = isCmp ? '🔗' : (isData ? '📊' : '▸');
-    return `<li class="r-${kind}"><span class="r-ico">${ico}</span><div class="r-body"><div class="r-item">${hlNum(escapeHtml(s))}</div></div></li>`;
+    return `<li class="r-${kind}"><span class="r-ico">🎯</span><div class="r-body"><div class="r-item">${hlNum(escapeHtml(s))}</div></div></li>`;
   });
   return `<ul class="reason-list">${rows.join('')}</ul>`;
 }

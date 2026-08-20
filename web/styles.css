@@ -227,7 +227,7 @@ details.analysis .r-warn {
 }
 details.analysis ul.reason-list li.r-cmp .r-body,
 details.analysis ul.reason-list li.r-note .r-body { color: #6b6459; }
-details.analysis ul.reason-list li.r-note .r-ico { background: transparent; }
+
 details.analysis ol.tips-list li { padding-left: 20px; position: relative; }
 details.analysis ol.tips-list .num {
   position: absolute; left: 0; top: 0; color: var(--accent); font-weight: 700;
