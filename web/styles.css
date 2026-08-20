@@ -122,14 +122,14 @@ select {
 
 /* ============ 卡片网格 ============ */
 .grid {
-  display: grid; gap: 14px; margin-top: 12px;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  columns: 280px; column-gap: 14px; margin-top: 12px;
 }
 .card {
   background: var(--card); border-radius: var(--radius);
   border: 1px solid var(--line); box-shadow: var(--shadow);
   padding: 18px; display: flex; flex-direction: column; gap: 12px;
   transition: transform .15s, box-shadow .15s;
+  break-inside: avoid; margin-bottom: 14px;
 }
 .card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(28,26,23,.08), 0 16px 40px rgba(28,26,23,.09); }
 
