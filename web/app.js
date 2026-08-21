@@ -89,6 +89,12 @@ function parseEntries(md, source) {
       .map(l => l.trim()).filter(l => l.startsWith('|'))
       .map(r => r.split('|').slice(1, -1).map(c => c.trim()))
       .filter(r => r.length > 1 && !r.every(c => /^:?-+:?$/.test(c)));
+    const modules = sectionLines('模块说明')
+      .map(l => l.trim()).filter(l => l.startsWith('|'))
+      .map(r => r.split('|').slice(1, -1).map(c => c.trim()))
+      .filter(r => r.length > 1 && !r.every(c => /^:?-+:?$/.test(c)));
+    const advice = sectionLines('剪辑建议')
+      .map(l => l.trim()).filter(l => l.startsWith('- ')).map(l => l.slice(2));
 
     out.push({
       id, title, link, date, blogger,
@@ -104,7 +110,7 @@ function parseEntries(md, source) {
       shareRatio: like && share !== null ? share / like : null,
       reason: get(/^- 爆款原因：(.+)$/m),
       tips: get(/^- 可借鉴点：(.+)$/m),
-      structure, script, analysis, storyboard,
+      structure, script, analysis, storyboard, modules, advice,
       _text: '',
     });
   }
@@ -363,6 +369,14 @@ function cardHtml(e) {
   </article>`;
 }
 
+function tableHtml(rows) {
+  if (!rows.length) return '';
+  return `<div class="m-table-wrap"><table class="m-table">
+    <thead><tr>${rows[0].map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead>
+    <tbody>${rows.slice(1).map(r => `<tr>${r.map(c => `<td>${escapeHtml(c)}</td>`).join('')}</tr>`).join('')}</tbody>
+  </table></div>`;
+}
+
 /* ============ 内容拆解弹窗 ============ */
 function openBreakdown(e) {
   const modal = document.getElementById('modal');
@@ -396,13 +410,25 @@ function openBreakdown(e) {
           : `<li>${escapeHtml(s)}</li>`;
       }).join('')}</ul>
     </div>` : ''}
+    ${e.modules.length ? `
+    <div class="m-sec">
+      <h3>内容结构模块</h3>
+      ${tableHtml(e.modules)}
+    </div>` : ''}
     ${e.storyboard.length ? `
     <div class="m-sec">
       <h3>分镜拆解（${e.storyboard.length - 1} 镜）</h3>
-      <div class="m-table-wrap"><table class="m-table">
-        <thead><tr>${e.storyboard[0].map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead>
-        <tbody>${e.storyboard.slice(1).map(r => `<tr>${r.map(c => `<td>${escapeHtml(c)}</td>`).join('')}</tr>`).join('')}</tbody>
-      </table></div>
+      ${tableHtml(e.storyboard)}
+    </div>` : ''}
+    ${e.advice.length ? `
+    <div class="m-sec">
+      <h3>剪辑与拍摄建议</h3>
+      <ul class="m-structure">${e.advice.map(s => {
+        const i = s.indexOf('：');
+        return i > 0
+          ? `<li><strong>${escapeHtml(s.slice(0, i))}：</strong>${escapeHtml(s.slice(i + 1))}</li>`
+          : `<li>${escapeHtml(s)}</li>`;
+      }).join('')}</ul>
     </div>` : ''}
     ${e.script.length ? `
     <div class="m-sec">
