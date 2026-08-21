@@ -536,10 +536,12 @@ function layoutGrid(heightOverride, keepCols) {
   const gap = 14, W = grid.clientWidth;
   const cols = Math.max(1, Math.floor((W + gap) / (280 + gap)));
   const colW = (W - gap * (cols - 1)) / cols;
+  const widths = colW + 'px';
+  for (const c of cards) if (c.style.width !== widths) c.style.width = widths;
+  // 高度集中读（仅一次回流），再集中写位置，避免逐卡写后读的布局抖动
+  const hs = cards.map(c => (heightOverride && heightOverride.has(c)) ? heightOverride.get(c) : c.offsetHeight);
   const heights = new Array(cols).fill(0);
-  for (const c of cards) {
-    c.style.width = colW + 'px';
-    const h = (heightOverride && heightOverride.has(c)) ? heightOverride.get(c) : c.offsetHeight;
+  cards.forEach((c, idx) => {
     // keepCols：沿用既有列号（展开/收起时只动同列下方卡片，隔壁列不动）
     let ci = -1;
     if (keepCols && c.dataset.col !== undefined && +c.dataset.col < cols) ci = +c.dataset.col;
@@ -547,8 +549,8 @@ function layoutGrid(heightOverride, keepCols) {
     c.dataset.col = ci;
     c.style.left = (ci * (colW + gap)) + 'px';
     c.style.top = heights[ci] + 'px';
-    heights[ci] += h + gap;
-  }
+    heights[ci] += hs[idx] + gap;
+  });
   grid.style.height = (Math.max(...heights) - gap) + 'px';
 }
 
