@@ -767,6 +767,14 @@ async function init() {
     document.getElementById('modalMask').addEventListener('click', closeModal);
     document.getElementById('modalClose').addEventListener('click', closeModal);
     document.addEventListener('keydown', ev => { if (ev.key === 'Escape') closeModal(); });
+    /* 右下角版本徽标：一眼确认当前运行版本，排查缓存问题 */
+    const _ver = ((document.querySelector('script[src*="app.js"]') || { src: '' }).src.match(/v=([\w-]+)/) || [])[1];
+    if (_ver) {
+      const vb = document.createElement('div');
+      vb.textContent = 'v' + _ver;
+      vb.style.cssText = 'position:fixed;right:10px;bottom:10px;z-index:99;font:10px/1.4 monospace;color:#8a8375;background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:6px;padding:2px 7px;pointer-events:none;';
+      document.body.appendChild(vb);
+    }
     /* 版本自检：页面跑旧版时自动更新 SW 并重载一次（session 内防循环） */
     setTimeout(() => {
       if (!('serviceWorker' in navigator)) return;
