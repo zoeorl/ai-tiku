@@ -311,7 +311,7 @@ function coverHtml(e) {
     <div class="card-cover">
       <a href="${e.link}" target="_blank" rel="noopener" title="点击打开原笔记">
         <img src="../covers/${key}.webp" alt="${escapeHtml(e.title)} 封面" loading="lazy" decoding="async"
-             onerror="this.closest('.card-cover').remove()">
+             onerror="this.closest('.card-cover').remove();layoutGrid()">
       </a>
       ${e.coverNote ? `<div class="cover-note"><span class="cn-ico">🔍</span>${escapeHtml(e.coverNote)}</div>` : ''}
     </div>`;
@@ -487,6 +487,28 @@ function renderGrid() {
   const more = document.getElementById('loadMore');
   more.hidden = left <= 0;
   if (left > 0) more.textContent = `加载更多条目（还剩 ${left} 条）`;
+  layoutGrid();
+}
+
+/* 行优先瀑布流：按数据顺序放入当前最矮列，视觉顺序=从左到右跨行 */
+function layoutGrid() {
+  const grid = document.getElementById('grid');
+  const cards = Array.from(grid.children);
+  if (!cards.length) { grid.style.height = ''; return; }
+  const gap = 14, W = grid.clientWidth;
+  const cols = Math.max(1, Math.floor((W + gap) / (280 + gap)));
+  const colW = (W - gap * (cols - 1)) / cols;
+  const heights = new Array(cols).fill(0);
+  for (const c of cards) {
+    c.style.width = colW + 'px';
+    const h = c.offsetHeight;
+    let ci = 0;
+    for (let i = 1; i < cols; i++) if (heights[i] < heights[ci]) ci = i;
+    c.style.left = (ci * (colW + gap)) + 'px';
+    c.style.top = heights[ci] + 'px';
+    heights[ci] += h + gap;
+  }
+  grid.style.height = (Math.max(...heights) - gap) + 'px';
 }
 
 /* ============ 博主统计（下拉与总览共用） ============ */
@@ -652,6 +674,8 @@ async function init() {
     document.getElementById('formFilter').addEventListener('change', ev => { state.form = ev.target.value; applyFilters(); });
     document.getElementById('sortSelect').addEventListener('change', ev => { state.sort = ev.target.value; applyFilters(); });
     document.getElementById('loadMore').addEventListener('click', () => { state.shown += PAGE_SIZE; renderGrid(); });
+    document.getElementById('grid').addEventListener('load', layoutGrid, true);
+    let _rT; window.addEventListener('resize', () => { clearTimeout(_rT); _rT = setTimeout(layoutGrid, 120); });
     document.getElementById('modalMask').addEventListener('click', closeModal);
     document.getElementById('modalClose').addEventListener('click', closeModal);
     document.addEventListener('keydown', ev => { if (ev.key === 'Escape') closeModal(); });
