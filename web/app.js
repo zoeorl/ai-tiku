@@ -333,7 +333,8 @@ function coverHtml(e) {
 const AVATARS = {
   '清华姜学长': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31hn2o0js34005n3t9vc456j1o5uj1s8?imageView2/2/w/540/format/webp',
   '黄白': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31l88bsrs4q004al8pg1jvf463ckfd1o?imageView2/2/w/540/format/webp',
-  '未来设计师KiK': 'https://sns-avatar-qc.xhscdn.com/avatar/640d8975a41e0aa3a66d63f6.jpg?imageView2/2/w/540/format/webp'
+  '未来设计师KiK': 'https://sns-avatar-qc.xhscdn.com/avatar/640d8975a41e0aa3a66d63f6.jpg?imageView2/2/w/540/format/webp',
+  '张咋啦': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31fl1gsq2g40049mmbftcr46vum9nk9o?imageView2/2/w/540/format/webp'
 };
 /* 博主头像；CDN 失效时回退彩色圆点 */
 function avatarHtml(name) {
