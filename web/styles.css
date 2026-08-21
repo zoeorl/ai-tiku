@@ -141,6 +141,7 @@ select:hover { border-color: var(--accent); color: var(--accent); }
 .grid {
   position: relative; margin-top: 12px;
 }
+.grid.boot .card { transition: none; }
 .card { position: absolute; top: 0; left: 0;
   background: var(--card); border-radius: var(--radius);
   border: 1px solid var(--line); box-shadow: var(--shadow);
