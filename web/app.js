@@ -327,6 +327,18 @@ function coverHtml(e) {
     </div>`;
 }
 
+const AVATARS = {
+  '清华姜学长': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo323vegno06u005qasnhbttfha76e0p98?imageView2/2/w/360/format/webp',
+  '黄白': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31l88bsrs4q004al8pg1jvf463ckfd1o?imageView2/2/w/540/format/webp',
+  '未来设计师KiK': 'https://sns-avatar-qc.xhscdn.com/avatar/640d8975a41e0aa3a66d63f6.jpg?imageView2/2/w/540/format/webp'
+};
+/* 博主头像；CDN 失效时回退彩色圆点 */
+function avatarHtml(name) {
+  const u = AVATARS[name];
+  if (!u) return `<i class="dot" style="background:${colorOf(name)[1]}"></i>`;
+  return `<img class="avatar" src="${u}" alt="" loading="lazy" onerror="this.outerHTML='<i class=&quot;dot&quot; style=&quot;background:${colorOf(name)[1]}&quot;></i>'">`;
+}
+
 function trunc(s, n) { s = s || ''; return s.length > n ? s.slice(0, n) + '…' : s; }
 
 function cardHtml(e) {
@@ -336,7 +348,7 @@ function cardHtml(e) {
   <article class="card">
     <div class="card-head">
       <div class="badges">
-        <span class="badge" style="background:${bcBg};color:${bcFg}">${e.blogger} · ${e.id}</span>
+        <span class="badge" style="background:${bcBg};color:${bcFg}">${avatarHtml(e.blogger)}${e.blogger} · ${e.id}</span>
         <span class="badge type" title="${escapeHtml(e.type)}">${escapeHtml(typeShort)}</span>
         ${e.form ? `<span class="badge form">${e.form.split('｜')[0]}</span>` : ''}
       </div>
@@ -386,7 +398,7 @@ function openBreakdown(e) {
   document.getElementById('modalBody').innerHTML = `
     <div class="m-head">
       <div class="badges">
-        <span class="badge" style="background:${bcBg};color:${bcFg}">${escapeHtml(e.blogger)} · ${escapeHtml(e.id)}</span>
+        <span class="badge" style="background:${bcBg};color:${bcFg}">${avatarHtml(e.blogger)}${escapeHtml(e.blogger)} · ${escapeHtml(e.id)}</span>
         ${e.form ? `<span class="badge form">${escapeHtml(e.form.split('｜')[0])}</span>` : ''}
         <span class="badge type" title="${escapeHtml(e.type)}">${escapeHtml(trunc(e.type.split(/（|\(/)[0], 20))}</span>
       </div>
@@ -614,7 +626,7 @@ function renderBloggerList(filter = '') {
   const rows = stats.filter(s => !f || s.name.toLowerCase().includes(f));
   document.getElementById('bloggerList').innerHTML =
     `<div class="bselect-row ${state.blogger === '' ? 'active' : ''}" data-b="">全部博主<span class="n">${ALL.length} 条</span></div>` +
-    rows.map(s => `<div class="bselect-row ${state.blogger === s.name ? 'active' : ''}" data-b="${escapeHtml(s.name)}"><span><i class="dot" style="background:${colorOf(s.name)[1]}"></i>${escapeHtml(s.name)}</span><span class="n">${s.n} 条</span></div>`).join('');
+    rows.map(s => `<div class="bselect-row ${state.blogger === s.name ? 'active' : ''}" data-b="${escapeHtml(s.name)}"><span>${avatarHtml(s.name)}${escapeHtml(s.name)}</span><span class="n">${s.n} 条</span></div>`).join('');
 }
 
 function initBloggerSelect() {
@@ -676,7 +688,7 @@ function renderBloggers() {
     return `
     <button class="bcard" data-b="${escapeHtml(s.name)}">
       <div class="bcard-head">
-        <span class="dot" style="background:${fg}"></span>
+        ${avatarHtml(s.name)}
         <span class="name">${escapeHtml(s.name)}</span>
         <span class="cnt" style="background:${bg};color:${fg}">${s.n} 条</span>
       </div>

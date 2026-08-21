@@ -111,6 +111,9 @@ body {
 .bselect-row .n { color: var(--sub); font-size: 12px; white-space: nowrap; }
 .bselect.fit .bselect-panel { width: max-content; min-width: 100%; left: auto; right: 0; }
 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; vertical-align: middle; }
+.avatar { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; vertical-align: -4px; margin-right: 6px; flex: none; background: #eee; }
+.badge .avatar { width: 14px; height: 14px; margin-right: 5px; vertical-align: -2px; }
+.bcard-head .avatar { width: 22px; height: 22px; margin-right: 7px; vertical-align: middle; }
 
 .selects { display: flex; gap: 8px; flex-wrap: wrap; }
 select {
