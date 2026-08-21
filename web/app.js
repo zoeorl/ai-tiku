@@ -373,7 +373,7 @@ function cardHtml(e) {
       ${ratioChip('分享比', e.shareRatio, 'pct')}
     </div>
     <div class="tags">${e.tags.map(t => `<span class="tag" data-tag="${escapeHtml(t)}">#${escapeHtml(t)}</span>`).join('')}</div>
-    ${(e.structure.length || e.script.length || e.storyboard.length) ? `<button class="bd-btn" type="button" data-b="${escapeHtml(e.blogger)}" data-id="${escapeHtml(e.id)}">📖 内容拆解</button>` : ''}
+    ${(e.structure.length || e.analysis.length || e.modules.length || e.storyboard.length || e.advice.length) ? `<button class="bd-btn" type="button" data-b="${escapeHtml(e.blogger)}" data-id="${escapeHtml(e.id)}">📖 内容拆解</button>` : ''}
     <details class="analysis">
       <summary>爆款原因 · 可借鉴点</summary>
       <div class="body">
@@ -397,7 +397,6 @@ function openBreakdown(e) {
   const modal = document.getElementById('modal');
   const [bcBg, bcFg] = colorOf(e.blogger);
   const interact = [e.like !== null && `赞 ${fmt(e.like)}`, e.fav !== null && `藏 ${fmt(e.fav)}`, e.com !== null && `评 ${fmt(e.com)}`, e.share !== null && `享 ${fmt(e.share)}`].filter(Boolean).join(' · ');
-  const scriptRaw = e.script.join('\n');
   document.getElementById('modalBody').innerHTML = `
     <div class="m-head">
       <div class="badges">
@@ -445,20 +444,9 @@ function openBreakdown(e) {
           : `<li>${escapeHtml(s)}</li>`;
       }).join('')}</ul>
     </div>` : ''}
-    ${e.script.length ? `
-    <div class="m-sec">
-      <div class="m-sec-head"><h3>逐字稿</h3><button class="m-copy" type="button">一键复制</button></div>
-      <div class="m-script">${e.script.map(p => p ? `<p>${escapeHtml(p)}</p>` : '').join('')}</div>
-    </div>` : ''}
   `;
   modal.hidden = false;
   document.body.style.overflow = 'hidden';
-  const copyBtn = document.querySelector('.m-copy');
-  if (copyBtn) copyBtn.addEventListener('click', () => {
-    const done = () => { copyBtn.textContent = '已复制 ✓'; setTimeout(() => { copyBtn.textContent = '一键复制'; }, 1500); };
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(scriptRaw).then(done).catch(done);
-    else { const ta = document.createElement('textarea'); ta.value = scriptRaw; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); done(); }
-  });
 }
 function closeModal() {
   document.getElementById('modal').hidden = true;
