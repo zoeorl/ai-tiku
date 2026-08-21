@@ -529,7 +529,7 @@ function renderGrid() {
 }
 
 /* 行优先瀑布流：按数据顺序放入当前最矮列，视觉顺序=从左到右跨行 */
-function layoutGrid(heightOverride) {
+function layoutGrid(heightOverride, keepCols) {
   const grid = document.getElementById('grid');
   const cards = Array.from(grid.children);
   if (!cards.length) { grid.style.height = ''; return; }
@@ -540,8 +540,11 @@ function layoutGrid(heightOverride) {
   for (const c of cards) {
     c.style.width = colW + 'px';
     const h = (heightOverride && heightOverride.has(c)) ? heightOverride.get(c) : c.offsetHeight;
-    let ci = 0;
-    for (let i = 1; i < cols; i++) if (heights[i] < heights[ci]) ci = i;
+    // keepCols：沿用既有列号（展开/收起时只动同列下方卡片，隔壁列不动）
+    let ci = -1;
+    if (keepCols && c.dataset.col !== undefined && +c.dataset.col < cols) ci = +c.dataset.col;
+    if (ci < 0) { ci = 0; for (let i = 1; i < cols; i++) if (heights[i] < heights[ci]) ci = i; }
+    c.dataset.col = ci;
     c.style.left = (ci * (colW + gap)) + 'px';
     c.style.top = heights[ci] + 'px';
     heights[ci] += h + gap;
@@ -731,14 +734,14 @@ async function init() {
         body.style.height = '0px';
         const collapsed = card.offsetHeight;
         const target = body.scrollHeight;
-        layoutGrid(new Map([[card, collapsed + target]]));
+        layoutGrid(new Map([[card, collapsed + target]]), true);
         void body.offsetHeight;
         body.style.transition = 'height .3s ease';
         body.style.height = target + 'px';
       } else {
         const startH = body.scrollHeight;
         body.style.height = startH + 'px';
-        layoutGrid(new Map([[card, card.offsetHeight - startH]]));
+        layoutGrid(new Map([[card, card.offsetHeight - startH]]), true);
         void body.offsetHeight;
         body.style.transition = 'height .3s ease';
         body.style.height = '0px';
@@ -748,7 +751,7 @@ async function init() {
         delete det.dataset.anim;
         body.style.height = body.style.transition = body.style.overflow = '';
         if (!opening) det.open = false;
-        layoutGrid();
+        layoutGrid(null, true);
       };
       body.addEventListener('transitionend', finish, { once: true });
       setTimeout(finish, 400);
