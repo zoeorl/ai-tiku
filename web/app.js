@@ -317,15 +317,17 @@ function coverHtml(e) {
     </div>`;
 }
 
+function trunc(s, n) { s = s || ''; return s.length > n ? s.slice(0, n) + '…' : s; }
+
 function cardHtml(e) {
   const [bcBg, bcFg] = colorOf(e.blogger);
-  const typeShort = e.type.split(/（|\(/)[0];
+  const typeShort = trunc(e.type.split(/（|\(/)[0], 12);
   return `
   <article class="card">
     <div class="card-head">
       <div class="badges">
         <span class="badge" style="background:${bcBg};color:${bcFg}">${e.blogger} · ${e.id}</span>
-        <span class="badge type">${typeShort}</span>
+        <span class="badge type" title="${escapeHtml(e.type)}">${escapeHtml(typeShort)}</span>
         ${e.form ? `<span class="badge form">${e.form.split('｜')[0]}</span>` : ''}
       </div>
     </div>
@@ -368,10 +370,11 @@ function openBreakdown(e) {
       <div class="badges">
         <span class="badge" style="background:${bcBg};color:${bcFg}">${escapeHtml(e.blogger)} · ${escapeHtml(e.id)}</span>
         ${e.form ? `<span class="badge form">${escapeHtml(e.form.split('｜')[0])}</span>` : ''}
-        <span class="badge type">${escapeHtml(e.type.split(/（|\(/)[0])}</span>
+        <span class="badge type" title="${escapeHtml(e.type)}">${escapeHtml(trunc(e.type.split(/（|\(/)[0], 20))}</span>
       </div>
       <h2>${escapeHtml(e.title)}</h2>
       <div class="m-meta">${escapeHtml(e.date || '日期未知')}｜${escapeHtml(interact)}</div>
+      <div class="m-ctype">内容类型：${escapeHtml(e.type)}</div>
       <a class="m-link" href="${e.link}" target="_blank" rel="noopener">打开原笔记 ↗</a>
     </div>
     ${e.structure.length ? `

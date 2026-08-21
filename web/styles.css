@@ -400,6 +400,7 @@ details.analysis ol.tips-list strong { color: var(--ink); }
 .m-head .badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .m-head h2 { font-size: 20px; line-height: 1.4; }
 .m-meta { margin-top: 6px; color: var(--sub); font-size: 12.5px; }
+.m-ctype { margin-top: 6px; color: var(--sub); font-size: 12.5px; line-height: 1.6; }
 .m-link {
   display: inline-block; margin-top: 10px; font-size: 12.5px; font-weight: 600;
   color: var(--accent); text-decoration: none;
