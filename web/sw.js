@@ -1,5 +1,5 @@
 /* aitiku service worker: covers 永久缓存(cache-first) + 核心资源版本缓存(随 ?v= 版本重建) */
-const VER = "20260821m";
+const VER = "20260821n";
 const CORE = "aitiku-core-" + VER;
 const IMGS = "aitiku-imgs-v1";
 
@@ -24,6 +24,16 @@ self.addEventListener("activate", (e) => {
 self.addEventListener("fetch", (e) => {
   const u = new URL(e.request.url);
   if (e.request.method !== "GET" || u.origin !== self.location.origin) return;
+  // 导航请求 network-first：部署后首刷即拿到新 index.html 与新版本号，避免旧 SW 首刷供旧版
+  if (e.request.mode === "navigate") {
+    e.respondWith(
+      fetch(e.request).then((res) => {
+        if (res.ok) { const copy = res.clone(); caches.open(CORE).then((c) => c.put(e.request, copy)); }
+        return res;
+      }).catch(() => caches.match(e.request, { cacheName: CORE }))
+    );
+    return;
+  }
   const isImg = u.pathname.includes("/covers/");
   const cacheName = isImg ? IMGS : CORE;
   e.respondWith(
