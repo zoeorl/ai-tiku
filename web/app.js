@@ -592,12 +592,12 @@ function restoreFromHash() {
   state.blogger = p.get('b') || '';
   state.q = p.get('q') || '';
   document.getElementById('search').value = state.q;
-  const setSel = (id, v) => { const el = document.getElementById(id); el.value = v; return el.value; };
-  state.type = setSel('typeFilter', p.get('t') || '');
+  state.type = p.get('t') || '';
+  if (!TYPE_OPTIONS.some(o => o[0] === state.type)) state.type = '';
   state.form = p.get('f') || '';
   document.querySelectorAll('#formSeg .seg-btn').forEach(x => x.classList.toggle('active', x.dataset.v === state.form));
-  state.sort = setSel('sortSelect', p.get('s') || 'date') || 'date';
-  if (!state.sort) { state.sort = 'date'; document.getElementById('sortSelect').value = 'date'; }
+  state.sort = p.get('s') || 'date';
+  if (!SORT_OPTIONS.some(o => o[0] === state.sort)) state.sort = 'date';
 }
 
 /* ============ 博主下拉选择器（可搜索，撑得住数百位博主） ============ */
@@ -639,6 +639,31 @@ function initBloggerSelect() {
     applyFilters();
   });
   document.addEventListener('click', () => { panel.hidden = true; });
+}
+
+/* ============ 通用下拉（类型/排序，与博主下拉同款面板） ============ */
+const TYPE_OPTIONS = [['', '全部内容类型'], ['教程', '教程类'], ['案例拆解', '案例拆解'], ['工具测评', '工具测评'], ['行业观点', '行业观点'], ['其他', '其他']];
+const SORT_OPTIONS = [['date', '发布日 · 新→旧'], ['like', '点赞 · 高→低'], ['fav', '收藏 · 高→低'], ['favRatio', '收藏比 · 高→低'], ['comRatio', '评论比 · 高→低'], ['shareRatio', '分享比 · 高→低']];
+function initDropdown(cfg) {
+  const btn = document.getElementById(cfg.btn), panel = document.getElementById(cfg.panel), list = document.getElementById(cfg.list);
+  const sync = () => {
+    const cur = cfg.get();
+    btn.textContent = ((cfg.options.find(o => o[0] === cur) || cfg.options[0])[1]) + ' ▾';
+    list.innerHTML = cfg.options.map(([v, label]) =>
+      `<div class="bselect-row ${v === cur ? 'active' : ''}" data-v="${escapeHtml(v)}">${escapeHtml(label)}</div>`).join('');
+  };
+  btn.addEventListener('click', ev => { ev.stopPropagation(); panel.hidden = !panel.hidden; if (!panel.hidden) sync(); });
+  panel.addEventListener('click', ev => ev.stopPropagation());
+  list.addEventListener('click', ev => {
+    const row = ev.target.closest('.bselect-row');
+    if (!row) return;
+    cfg.set(row.dataset.v);
+    panel.hidden = true;
+    sync();
+    applyFilters();
+  });
+  document.addEventListener('click', () => { panel.hidden = true; });
+  sync();
 }
 
 /* ============ 博主总览 ============ */
@@ -703,6 +728,8 @@ async function init() {
 
     restoreFromHash();
     initBloggerSelect();
+    initDropdown({ btn: 'typeBtn', panel: 'typePanel', list: 'typeList', options: TYPE_OPTIONS, get: () => state.type, set: v => { state.type = v; } });
+    initDropdown({ btn: 'sortBtn', panel: 'sortPanel', list: 'sortList', options: SORT_OPTIONS, get: () => state.sort, set: v => { state.sort = v; } });
     renderBloggers();
     initTabs();
     document.getElementById('boards').innerHTML = renderBoards(ALL);
@@ -714,7 +741,6 @@ async function init() {
       state.q = ev.target.value.trim();
       applyFilters();
     });
-    document.getElementById('typeFilter').addEventListener('change', ev => { state.type = ev.target.value; applyFilters(); });
     document.getElementById('formSeg').addEventListener('click', ev => {
       const b = ev.target.closest('.seg-btn');
       if (!b) return;
@@ -722,7 +748,6 @@ async function init() {
       document.querySelectorAll('#formSeg .seg-btn').forEach(x => x.classList.toggle('active', x === b));
       applyFilters();
     });
-    document.getElementById('sortSelect').addEventListener('change', ev => { state.sort = ev.target.value; applyFilters(); });
     document.getElementById('loadMore').addEventListener('click', () => { state.shown += PAGE_SIZE; renderGrid(); });
     document.getElementById('grid').addEventListener('load', () => layoutGrid(null, true), true);
     let _rT; window.addEventListener('resize', () => { clearTimeout(_rT); _rT = setTimeout(layoutGrid, 120); });
