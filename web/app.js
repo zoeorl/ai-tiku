@@ -756,6 +756,24 @@ async function init() {
     document.getElementById('modalMask').addEventListener('click', closeModal);
     document.getElementById('modalClose').addEventListener('click', closeModal);
     document.addEventListener('keydown', ev => { if (ev.key === 'Escape') closeModal(); });
+    /* 版本自检：页面跑旧版时自动更新 SW 并重载一次（session 内防循环） */
+    setTimeout(() => {
+      if (!('serviceWorker' in navigator)) return;
+      fetch('sw.js?probe=' + Date.now(), { cache: 'no-store' })
+        .then(r => r.text())
+        .then(async (txt) => {
+          const remote = (txt.match(/const VER = "([^"]+)"/) || [])[1];
+          const scr = document.querySelector('script[src*="app.js"]');
+          const cur = new URLSearchParams((scr ? scr.src.split('?')[1] : '') || '').get('v');
+          if (!remote || !cur || remote === cur) return;
+          if (sessionStorage.getItem('swprobe-' + remote)) return;
+          sessionStorage.setItem('swprobe-' + remote, '1');
+          const reg = await navigator.serviceWorker.getRegistration();
+          if (reg) await reg.update();
+          location.reload();
+        })
+        .catch(() => {});
+    }, 600);
     document.getElementById('grid').addEventListener('click', ev => {
       const bd = ev.target.closest('.bd-btn');
       if (bd) {
