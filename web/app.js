@@ -731,25 +731,31 @@ async function init() {
       body.style.overflow = 'hidden';
       if (opening) {
         det.open = true;
+        const mTop = parseFloat(getComputedStyle(body).marginTop) || 0;
         body.style.height = '0px';
+        body.style.marginTop = '0px';
         const collapsed = card.offsetHeight;
         const target = body.scrollHeight;
-        layoutGrid(new Map([[card, collapsed + target]]), true);
+        layoutGrid(new Map([[card, collapsed + target + mTop]]), true);
         void body.offsetHeight;
-        body.style.transition = 'height .3s ease';
+        body.style.transition = 'height .3s ease, margin-top .3s ease';
         body.style.height = target + 'px';
+        body.style.marginTop = mTop + 'px';
       } else {
+        const mTop = parseFloat(getComputedStyle(body).marginTop) || 0;
         const startH = body.scrollHeight;
         body.style.height = startH + 'px';
-        layoutGrid(new Map([[card, card.offsetHeight - startH]]), true);
+        // 终态高度=收起后真实高度（含 margin 消失），避免结尾跳变
+        layoutGrid(new Map([[card, card.offsetHeight - startH - mTop]]), true);
         void body.offsetHeight;
-        body.style.transition = 'height .3s ease';
+        body.style.transition = 'height .3s ease, margin-top .3s ease';
         body.style.height = '0px';
+        body.style.marginTop = '0px';
       }
       const finish = () => {
         if (!det.dataset.anim) return;
         delete det.dataset.anim;
-        body.style.height = body.style.transition = body.style.overflow = '';
+        body.style.height = body.style.transition = body.style.overflow = body.style.marginTop = '';
         if (!opening) det.open = false;
         layoutGrid(null, true);
       };
