@@ -529,7 +529,7 @@ function renderGrid() {
 }
 
 /* 行优先瀑布流：按数据顺序放入当前最矮列，视觉顺序=从左到右跨行 */
-function layoutGrid() {
+function layoutGrid(heightOverride) {
   const grid = document.getElementById('grid');
   const cards = Array.from(grid.children);
   if (!cards.length) { grid.style.height = ''; return; }
@@ -539,7 +539,7 @@ function layoutGrid() {
   const heights = new Array(cols).fill(0);
   for (const c of cards) {
     c.style.width = colW + 'px';
-    const h = c.offsetHeight;
+    const h = (heightOverride && heightOverride.has(c)) ? heightOverride.get(c) : c.offsetHeight;
     let ci = 0;
     for (let i = 1; i < cols; i++) if (heights[i] < heights[ci]) ci = i;
     c.style.left = (ci * (colW + gap)) + 'px';
@@ -714,6 +714,45 @@ async function init() {
     document.getElementById('loadMore').addEventListener('click', () => { state.shown += PAGE_SIZE; renderGrid(); });
     document.getElementById('grid').addEventListener('load', layoutGrid, true);
     let _rT; window.addEventListener('resize', () => { clearTimeout(_rT); _rT = setTimeout(layoutGrid, 120); });
+    /* 爆款原因/可借鉴点 展开收起动画：body 高度过渡 + 下方卡片用终态高度同步滑动 */
+    document.getElementById('grid').addEventListener('click', (ev) => {
+      const sum = ev.target.closest('summary');
+      if (!sum || !sum.parentElement.classList.contains('analysis')) return;
+      ev.preventDefault();
+      const det = sum.parentElement;
+      if (det.dataset.anim) return;
+      const body = det.querySelector('.body');
+      const card = det.closest('.card');
+      const opening = !det.open;
+      det.dataset.anim = '1';
+      body.style.overflow = 'hidden';
+      if (opening) {
+        det.open = true;
+        body.style.height = '0px';
+        const collapsed = card.offsetHeight;
+        const target = body.scrollHeight;
+        layoutGrid(new Map([[card, collapsed + target]]));
+        void body.offsetHeight;
+        body.style.transition = 'height .3s ease';
+        body.style.height = target + 'px';
+      } else {
+        const startH = body.scrollHeight;
+        body.style.height = startH + 'px';
+        layoutGrid(new Map([[card, card.offsetHeight - startH]]));
+        void body.offsetHeight;
+        body.style.transition = 'height .3s ease';
+        body.style.height = '0px';
+      }
+      const finish = () => {
+        if (!det.dataset.anim) return;
+        delete det.dataset.anim;
+        body.style.height = body.style.transition = body.style.overflow = '';
+        if (!opening) det.open = false;
+        layoutGrid();
+      };
+      body.addEventListener('transitionend', finish, { once: true });
+      setTimeout(finish, 400);
+    });
     document.getElementById('modalMask').addEventListener('click', closeModal);
     document.getElementById('modalClose').addEventListener('click', closeModal);
     document.addEventListener('keydown', ev => { if (ev.key === 'Escape') closeModal(); });
