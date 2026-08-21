@@ -757,7 +757,7 @@ async function init() {
         delete det.dataset.anim;
         body.style.height = body.style.transition = body.style.overflow = body.style.marginTop = '';
         if (!opening) det.open = false;
-        layoutGrid(null, true);
+        // 终态排布在点击时已用精确高度完成，结尾零重排，避免末帧卡顿
       };
       body.addEventListener('transitionend', finish, { once: true });
       setTimeout(finish, 400);
