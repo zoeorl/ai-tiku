@@ -594,7 +594,8 @@ function restoreFromHash() {
   document.getElementById('search').value = state.q;
   const setSel = (id, v) => { const el = document.getElementById(id); el.value = v; return el.value; };
   state.type = setSel('typeFilter', p.get('t') || '');
-  state.form = setSel('formFilter', p.get('f') || '');
+  state.form = p.get('f') || '';
+  document.querySelectorAll('#formSeg .seg-btn').forEach(x => x.classList.toggle('active', x.dataset.v === state.form));
   state.sort = setSel('sortSelect', p.get('s') || 'date') || 'date';
   if (!state.sort) { state.sort = 'date'; document.getElementById('sortSelect').value = 'date'; }
 }
@@ -714,7 +715,13 @@ async function init() {
       applyFilters();
     });
     document.getElementById('typeFilter').addEventListener('change', ev => { state.type = ev.target.value; applyFilters(); });
-    document.getElementById('formFilter').addEventListener('change', ev => { state.form = ev.target.value; applyFilters(); });
+    document.getElementById('formSeg').addEventListener('click', ev => {
+      const b = ev.target.closest('.seg-btn');
+      if (!b) return;
+      state.form = b.dataset.v;
+      document.querySelectorAll('#formSeg .seg-btn').forEach(x => x.classList.toggle('active', x === b));
+      applyFilters();
+    });
     document.getElementById('sortSelect').addEventListener('change', ev => { state.sort = ev.target.value; applyFilters(); });
     document.getElementById('loadMore').addEventListener('click', () => { state.shown += PAGE_SIZE; renderGrid(); });
     document.getElementById('grid').addEventListener('load', () => layoutGrid(null, true), true);

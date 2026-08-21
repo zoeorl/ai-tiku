@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI博主对标选题库</title>
-<link rel="stylesheet" href="styles.css?v=20260821w">
+<link rel="stylesheet" href="styles.css?v=20260821x">
 </head>
 <body>
 
@@ -52,11 +52,11 @@
           <option value="行业观点">行业观点</option>
           <option value="其他">其他</option>
         </select>
-        <select id="formFilter">
-          <option value="">全部形式</option>
-          <option value="视频">视频</option>
-          <option value="图文">图文</option>
-        </select>
+        <div class="seg" id="formSeg">
+          <button class="seg-btn active" type="button" data-v="">全部</button>
+          <button class="seg-btn" type="button" data-v="视频">视频</button>
+          <button class="seg-btn" type="button" data-v="图文">图文</button>
+        </div>
         <select id="sortSelect">
           <option value="date">发布日 · 新→旧</option>
           <option value="like">点赞 · 高→低</option>
@@ -104,7 +104,7 @@
   </div>
 </div>
 
-<script src="app.js?v=20260821w"></script>
+<script src="app.js?v=20260821x"></script>
 <script>
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
