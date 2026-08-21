@@ -544,7 +544,10 @@ function renderGrid() {
   if (left > 0) more.textContent = `加载更多条目（还剩 ${left} 条）`;
   layoutGrid();
   requestAnimationFrame(() => requestAnimationFrame(() => grid.classList.remove('boot')));
+  if (checkMoreHook) checkMoreHook();
 }
+
+let checkMoreHook = null; // 无限滚动：渲染完成后的自动加载检查
 
 /* 行优先瀑布流：按数据顺序放入当前最矮列，视觉顺序=从左到右跨行 */
 function layoutGrid(heightOverride, keepCols) {
@@ -767,7 +770,20 @@ async function init() {
       document.querySelectorAll('#formSeg .seg-btn').forEach(x => x.classList.toggle('active', x === b));
       applyFilters();
     });
-    document.getElementById('loadMore').addEventListener('click', () => { state.shown += PAGE_SIZE; renderGrid(); });
+    const moreBtn = document.getElementById('loadMore');
+    moreBtn.addEventListener('click', () => { state.shown += PAGE_SIZE; renderGrid(); });
+    /* 无限滚动：接近底部（提前600px）自动加载下一页 */
+    const checkMore = () => {
+      if (moreBtn.hidden) return;
+      if (moreBtn.getBoundingClientRect().top < window.innerHeight + 600) { state.shown += PAGE_SIZE; renderGrid(); }
+    };
+    checkMoreHook = checkMore;
+    let _mR = 0;
+    window.addEventListener('scroll', () => {
+      if (_mR) return;
+      _mR = requestAnimationFrame(() => { _mR = 0; checkMore(); });
+    }, { passive: true });
+    checkMore();
     document.getElementById('grid').addEventListener('load', () => layoutGrid(null, true), true);
     let _rT; window.addEventListener('resize', () => { clearTimeout(_rT); _rT = setTimeout(layoutGrid, 120); });
     /* 爆款原因/可借鉴点 展开收起动画：body 高度过渡 + 下方卡片用终态高度同步滑动 */
