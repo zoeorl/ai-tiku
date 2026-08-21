@@ -2,6 +2,7 @@
 /* 新增博主：建专册 md + 在 bloggers.json 加一行，无需改代码 */
 const MANIFEST_FILE = 'bloggers.json';
 const RULES_FILE = '../00-总览与跨博主规律.md';
+let COVER_DIMS = {};
 let SOURCES = [];
 
 /* 博主色板：按清单顺序自动分配，前三色兼容旧版 */
@@ -317,9 +318,11 @@ function ratioChip(label, v, kind) {
 function coverHtml(e) {
   if (!e.book) return '';
   const key = e.book + '-' + e.id;
+  const d = COVER_DIMS[key];
+  const ar = d ? ` style="aspect-ratio:${d[0]}/${d[1]}"` : '';
   return `
     <div class="card-cover">
-      <a href="${e.link}" target="_blank" rel="noopener" title="点击打开原笔记">
+      <a href="${e.link}" target="_blank" rel="noopener" title="点击打开原笔记"${ar}>
         <img src="../covers/${key}.webp" alt="${escapeHtml(e.title)} 封面" loading="lazy" decoding="async"
              onerror="this.closest('.card-cover').remove();layoutGrid(null,true)">
       </a>
@@ -734,6 +737,7 @@ function initTabs() {
 async function init() {
   try {
     SOURCES = await (await fetch(MANIFEST_FILE)).json();
+    COVER_DIMS = await fetch('covers.json').then(r => r.ok ? r.json() : {}).catch(() => ({}));
     const results = await Promise.all(SOURCES.map(async s => {
       const res = await fetch(s.file);
       if (!res.ok) throw new Error(s.file);
