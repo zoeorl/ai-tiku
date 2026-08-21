@@ -85,6 +85,10 @@ function parseEntries(md, source) {
       .map(l => l.trim()).filter(l => l.startsWith('>')).map(l => l.replace(/^>\s?/, ''));
     const analysis = sectionLines('内容分析')
       .map(l => l.trim()).filter(l => l.startsWith('- ')).map(l => l.slice(2));
+    const storyboard = sectionLines('分镜拆解')
+      .map(l => l.trim()).filter(l => l.startsWith('|'))
+      .map(r => r.split('|').slice(1, -1).map(c => c.trim()))
+      .filter(r => r.length > 1 && !r.every(c => /^:?-+:?$/.test(c)));
 
     out.push({
       id, title, link, date, blogger,
@@ -100,7 +104,7 @@ function parseEntries(md, source) {
       shareRatio: like && share !== null ? share / like : null,
       reason: get(/^- 爆款原因：(.+)$/m),
       tips: get(/^- 可借鉴点：(.+)$/m),
-      structure, script, analysis,
+      structure, script, analysis, storyboard,
       _text: '',
     });
   }
@@ -348,7 +352,7 @@ function cardHtml(e) {
       ${ratioChip('分享比', e.shareRatio, 'pct')}
     </div>
     <div class="tags">${e.tags.map(t => `<span class="tag" data-tag="${escapeHtml(t)}">#${escapeHtml(t)}</span>`).join('')}</div>
-    ${(e.structure.length || e.script.length) ? `<button class="bd-btn" type="button" data-b="${escapeHtml(e.blogger)}" data-id="${escapeHtml(e.id)}">📖 内容拆解</button>` : ''}
+    ${(e.structure.length || e.script.length || e.storyboard.length) ? `<button class="bd-btn" type="button" data-b="${escapeHtml(e.blogger)}" data-id="${escapeHtml(e.id)}">📖 内容拆解</button>` : ''}
     <details class="analysis">
       <summary>爆款原因 · 可借鉴点</summary>
       <div class="body">
@@ -391,6 +395,14 @@ function openBreakdown(e) {
           ? `<li><strong>${escapeHtml(s.slice(0, i))}：</strong>${escapeHtml(s.slice(i + 1))}</li>`
           : `<li>${escapeHtml(s)}</li>`;
       }).join('')}</ul>
+    </div>` : ''}
+    ${e.storyboard.length ? `
+    <div class="m-sec">
+      <h3>分镜拆解（${e.storyboard.length - 1} 镜）</h3>
+      <div class="m-table-wrap"><table class="m-table">
+        <thead><tr>${e.storyboard[0].map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead>
+        <tbody>${e.storyboard.slice(1).map(r => `<tr>${r.map(c => `<td>${escapeHtml(c)}</td>`).join('')}</tr>`).join('')}</tbody>
+      </table></div>
     </div>` : ''}
     ${e.script.length ? `
     <div class="m-sec">
