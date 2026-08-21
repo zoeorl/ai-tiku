@@ -112,8 +112,8 @@ body {
 .bselect.fit .bselect-panel { width: max-content; min-width: 100%; left: auto; right: 0; }
 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; vertical-align: middle; }
 .avatar { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; vertical-align: -4px; margin-right: 6px; flex: none; background: #eee; }
-.badge.who { display: inline-flex; align-items: center; height: 20px; padding: 0 9px 0 0; overflow: hidden; }
-.badge.who .avatar { width: 20px; height: 20px; margin: 0 6px 0 0; vertical-align: middle; }
+.badge.who { display: inline-flex; align-items: center; height: 24px; padding: 0 10px 0 0; overflow: hidden; }
+.badge.who .avatar { width: 24px; height: 24px; margin: 0 6px 0 0; vertical-align: middle; }
 .bcard-head .avatar { width: 22px; height: 22px; margin-right: 7px; vertical-align: middle; }
 
 .selects { display: flex; gap: 8px; flex-wrap: wrap; }
