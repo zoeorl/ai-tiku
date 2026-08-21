@@ -321,7 +321,7 @@ function coverHtml(e) {
     <div class="card-cover">
       <a href="${e.link}" target="_blank" rel="noopener" title="点击打开原笔记">
         <img src="../covers/${key}.webp" alt="${escapeHtml(e.title)} 封面" loading="lazy" decoding="async"
-             onerror="this.closest('.card-cover').remove();layoutGrid()">
+             onerror="this.closest('.card-cover').remove();layoutGrid(null,true)">
       </a>
       ${e.coverNote ? `<div class="cover-note"><span class="cn-ico">🔍</span>${escapeHtml(e.coverNote)}</div>` : ''}
     </div>`;
@@ -717,7 +717,7 @@ async function init() {
     document.getElementById('formFilter').addEventListener('change', ev => { state.form = ev.target.value; applyFilters(); });
     document.getElementById('sortSelect').addEventListener('change', ev => { state.sort = ev.target.value; applyFilters(); });
     document.getElementById('loadMore').addEventListener('click', () => { state.shown += PAGE_SIZE; renderGrid(); });
-    document.getElementById('grid').addEventListener('load', () => layoutGrid(), true);
+    document.getElementById('grid').addEventListener('load', () => layoutGrid(null, true), true);
     let _rT; window.addEventListener('resize', () => { clearTimeout(_rT); _rT = setTimeout(layoutGrid, 120); });
     /* 爆款原因/可借鉴点 展开收起动画：body 高度过渡 + 下方卡片用终态高度同步滑动 */
     document.getElementById('grid').addEventListener('click', (ev) => {
