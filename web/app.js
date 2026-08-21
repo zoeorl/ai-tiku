@@ -531,13 +531,16 @@ function applyFilters(resetPage = true) {
 
 function renderGrid() {
   const list = currentList;
-  document.getElementById('grid').innerHTML = list.slice(0, state.shown).map(cardHtml).join('');
+  const grid = document.getElementById('grid');
+  grid.classList.add('boot'); // 首帧布局禁用过渡，避免卡片从 (0,0) “扩散”出来
+  grid.innerHTML = list.slice(0, state.shown).map(cardHtml).join('');
   document.getElementById('empty').hidden = list.length > 0;
   const left = list.length - state.shown;
   const more = document.getElementById('loadMore');
   more.hidden = left <= 0;
   if (left > 0) more.textContent = `加载更多条目（还剩 ${left} 条）`;
   layoutGrid();
+  requestAnimationFrame(() => requestAnimationFrame(() => grid.classList.remove('boot')));
 }
 
 /* 行优先瀑布流：按数据顺序放入当前最矮列，视觉顺序=从左到右跨行 */
