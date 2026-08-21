@@ -348,7 +348,7 @@ function cardHtml(e) {
   <article class="card">
     <div class="card-head">
       <div class="badges">
-        <span class="badge" style="background:${bcBg};color:${bcFg}">${avatarHtml(e.blogger)}${e.blogger} · ${e.id}</span>
+        <span class="badge who" style="background:${bcBg};color:${bcFg}">${avatarHtml(e.blogger)}${e.blogger} · ${e.id}</span>
         <span class="badge type" title="${escapeHtml(e.type)}">${escapeHtml(typeShort)}</span>
         ${e.form ? `<span class="badge form">${e.form.split('｜')[0]}</span>` : ''}
       </div>
@@ -398,7 +398,7 @@ function openBreakdown(e) {
   document.getElementById('modalBody').innerHTML = `
     <div class="m-head">
       <div class="badges">
-        <span class="badge" style="background:${bcBg};color:${bcFg}">${avatarHtml(e.blogger)}${escapeHtml(e.blogger)} · ${escapeHtml(e.id)}</span>
+        <span class="badge who" style="background:${bcBg};color:${bcFg}">${avatarHtml(e.blogger)}${escapeHtml(e.blogger)} · ${escapeHtml(e.id)}</span>
         ${e.form ? `<span class="badge form">${escapeHtml(e.form.split('｜')[0])}</span>` : ''}
         <span class="badge type" title="${escapeHtml(e.type)}">${escapeHtml(trunc(e.type.split(/（|\(/)[0], 20))}</span>
       </div>
