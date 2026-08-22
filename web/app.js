@@ -369,10 +369,10 @@ function cardHtml(e) {
     </div>
     ${coverHtml(e)}
     <div class="metrics">
-      <div class="metric"><div class="v">${fmt(e.like)}</div><div class="k">赞</div></div>
-      <div class="metric"><div class="v">${fmt(e.fav)}</div><div class="k">藏</div></div>
-      <div class="metric"><div class="v">${fmt(e.com)}</div><div class="k">评</div></div>
-      <div class="metric"><div class="v">${fmt(e.share)}</div><div class="k">享</div></div>
+      <div class="metric"><div class="v">${fmt(e.like)}</div><div class="k">点赞</div></div>
+      <div class="metric"><div class="v">${fmt(e.fav)}</div><div class="k">收藏</div></div>
+      <div class="metric"><div class="v">${fmt(e.com)}</div><div class="k">评论</div></div>
+      <div class="metric"><div class="v">${fmt(e.share)}</div><div class="k">分享</div></div>
     </div>
     <div class="ratios">
       ${ratioChip('收藏比', e.favRatio, 'fav')}
