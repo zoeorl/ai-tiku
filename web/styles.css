@@ -367,6 +367,7 @@ details.analysis ol.tips-list strong { color: var(--ink); }
   transition: all .15s;
 }
 .loadmore:hover { border-color: var(--accent); color: var(--accent); }
+.loadmore[hidden] { display: none; }
 
 /* ============ 博主总览 ============ */
 .bgrid {
