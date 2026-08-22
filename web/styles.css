@@ -474,7 +474,7 @@ details.analysis ol.tips-list strong { color: var(--ink); }
 .bbar-item:hover .bbar-av { border-color: var(--line); }
 .bbar-item.active .bbar-av { border-color: var(--accent); }
 .bbar-item.active { color: var(--ink); font-weight: 700; }
-.bbar-name { max-width: 64px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bbar-name { white-space: nowrap; }
 .bbar-name b { font-weight: 500; color: var(--sub); margin-left: 2px; }
 .bbar-item.active .bbar-name b { color: inherit; }
 .bselect-row.kb { background: #f4f1ea; outline: 2px solid var(--accent); outline-offset: -2px; }
