@@ -156,7 +156,7 @@ select:hover { border-color: var(--accent); color: var(--accent); }
   font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 999px;
   white-space: nowrap;
 }
-.badge.type { background: #f1efe9; color: var(--sub); }
+.badge.type { background: #f1efe9; color: var(--sub); white-space: normal; max-width: 100%; }
 .badge.form { background: var(--green-soft); color: var(--green); }
 
 .card-title a {
