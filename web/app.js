@@ -66,7 +66,7 @@ function parseEntries(md, source) {
       .replace('/discovery/item/', '/explore/');
     const date = get(/发布：(\d{4}-\d{2}-\d{2})/);
     const blogger = get(/｜\s*博主：([^｜]+?)(?=\s*｜|$)/m);
-    const tags = (get(/｜\s*标签：([^｜]+?)(?=\s*｜|$)/m) || '').split(/\s+/).map(t => t.replace(/^#/, '')).filter(Boolean);
+    const tags = (get(/｜\s*标签：([^｜]+?)(?=\s*｜|$)/m) || '').split(/\s+/).map(t => t.replace(/^#/, '')).filter(t => t && t !== '等');
     const type = get(/^- 内容类型：(.+)$/m);
 
     // 可选多行字段：内容结构/内容分析（缩进 bullet）与逐字稿（> 引用，原文照录）
