@@ -353,7 +353,7 @@ function trunc(s, n) { s = s || ''; return s.length > n ? s.slice(0, n) + '…' 
 
 function cardHtml(e) {
   const [bcBg, bcFg] = colorOf(e.blogger);
-  const typeShort = e.type || '';
+  const typeShort = (e.type || '').split(/（|\(/)[0].trim();
   return `
   <article class="card">
     <div class="card-head">
