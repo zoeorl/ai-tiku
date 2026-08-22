@@ -624,13 +624,37 @@ function syncBloggerBtn() {
     : `全部博主<span class="cnt">${ALL.length} 条</span> ▾`;
 }
 
+function renderBloggerBar() {
+  const bar = document.getElementById('bloggerBar');
+  if (!bar) return;
+  const stats = bloggerStats();
+  bar.innerHTML =
+    `<button type="button" class="bbar-item ${state.blogger === '' ? 'active' : ''}" data-b=""><span class="bbar-av">全部</span><span class="bbar-name">全部<b>${ALL.length}</b></span></button>` +
+    stats.map(s => `<button type="button" class="bbar-item ${state.blogger === s.name ? 'active' : ''}" data-b="${escapeHtml(s.name)}"><span class="bbar-av">${avatarHtml(s.name)}</span><span class="bbar-name">${escapeHtml(s.name)}<b>${s.n}</b></span></button>`).join('');
+}
+
+function setBlogger(b) {
+  state.blogger = b;
+  document.getElementById('bloggerPanel').hidden = true;
+  syncBloggerBtn();
+  renderBloggerBar();
+  renderBloggerList();
+  applyFilters();
+}
+
 function renderBloggerList(filter = '') {
   const stats = bloggerStats();
   const f = filter.trim().toLowerCase();
   const rows = stats.filter(s => !f || s.name.toLowerCase().includes(f));
+  const hl = name => {
+    if (!f) return escapeHtml(name);
+    const i = name.toLowerCase().indexOf(f);
+    if (i < 0) return escapeHtml(name);
+    return escapeHtml(name.slice(0, i)) + '<mark>' + escapeHtml(name.slice(i, i + f.length)) + '</mark>' + escapeHtml(name.slice(i + f.length));
+  };
   document.getElementById('bloggerList').innerHTML =
     `<div class="bselect-row ${state.blogger === '' ? 'active' : ''}" data-b="">全部博主<span class="n">${ALL.length} 条</span></div>` +
-    rows.map(s => `<div class="bselect-row ${state.blogger === s.name ? 'active' : ''}" data-b="${escapeHtml(s.name)}"><span>${avatarHtml(s.name)}${escapeHtml(s.name)}</span><span class="n">${s.n} 条</span></div>`).join('');
+    rows.map(s => `<div class="bselect-row ${state.blogger === s.name ? 'active' : ''}" data-b="${escapeHtml(s.name)}"><span>${avatarHtml(s.name)}${hl(s.name)}</span><span class="n">${s.n} 条</span></div>`).join('');
 }
 
 function initBloggerSelect() {
@@ -638,21 +662,36 @@ function initBloggerSelect() {
   const input = document.getElementById('bloggerSearch');
   syncBloggerBtn();
   renderBloggerList();
+  renderBloggerBar();
   document.getElementById('bloggerBtn').addEventListener('click', ev => {
     ev.stopPropagation();
     panel.hidden = !panel.hidden;
     if (!panel.hidden) { input.value = ''; renderBloggerList(); input.focus(); }
   });
   input.addEventListener('input', () => renderBloggerList(input.value));
+  input.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') { panel.hidden = true; return; }
+    if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(ev.key)) return;
+    ev.preventDefault();
+    const rows = [...document.getElementById('bloggerList').querySelectorAll('.bselect-row')];
+    if (!rows.length) return;
+    let i = rows.findIndex(r => r.classList.contains('kb'));
+    if (ev.key === 'Enter') { setBlogger(rows[i > -1 ? i : 0].dataset.b); return; }
+    rows.forEach(r => r.classList.remove('kb'));
+    i = ev.key === 'ArrowDown' ? Math.min(rows.length - 1, i + 1) : Math.max(0, i < 0 ? 0 : i - 1);
+    rows[i].classList.add('kb');
+    rows[i].scrollIntoView({ block: 'nearest' });
+  });
   input.addEventListener('click', ev => ev.stopPropagation());
+  document.getElementById('bloggerBar').addEventListener('click', ev => {
+    const it = ev.target.closest('.bbar-item');
+    if (it) setBlogger(it.dataset.b);
+  });
   panel.addEventListener('click', ev => ev.stopPropagation());
   document.getElementById('bloggerList').addEventListener('click', ev => {
     const row = ev.target.closest('.bselect-row');
     if (!row) return;
-    state.blogger = row.dataset.b;
-    panel.hidden = true;
-    syncBloggerBtn();
-    applyFilters();
+    setBlogger(row.dataset.b);
   });
   document.addEventListener('click', () => { panel.hidden = true; });
 }
