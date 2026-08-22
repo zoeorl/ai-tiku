@@ -629,8 +629,8 @@ function renderBloggerBar() {
   if (!bar) return;
   const stats = bloggerStats();
   bar.innerHTML =
-    `<button type="button" class="bbar-item ${state.blogger === '' ? 'active' : ''}" data-b=""><span class="bbar-av">全部</span><span class="bbar-name">全部<b>${ALL.length}</b></span></button>` +
-    stats.map(s => `<button type="button" class="bbar-item ${state.blogger === s.name ? 'active' : ''}" data-b="${escapeHtml(s.name)}"><span class="bbar-av">${avatarHtml(s.name)}</span><span class="bbar-name">${escapeHtml(s.name)}<b>${s.n}</b></span></button>`).join('');
+    `<button type="button" class="bbar-item ${state.blogger === '' ? 'active' : ''}" data-b=""><span class="bbar-av">全部</span><span class="bbar-name">全部</span></button>` +
+    stats.map(s => `<button type="button" class="bbar-item ${state.blogger === s.name ? 'active' : ''}" data-b="${escapeHtml(s.name)}"><span class="bbar-av">${avatarHtml(s.name)}</span><span class="bbar-name">${escapeHtml(s.name)}</span></button>`).join('');
 }
 
 function setBlogger(b) {
