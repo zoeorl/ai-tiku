@@ -1,6 +1,8 @@
 /* ============ 数据源：清单驱动，md 单一数据源 ============ */
 /* 新增博主：建专册 md + 在 bloggers.json 加一行，无需改代码 */
 const MANIFEST_FILE = 'bloggers.json';
+const APP_VER = "20260823z";
+const VQ = '?v=' + APP_VER;
 const RULES_FILE = '../00-总览与跨博主规律.md';
 let COVER_DIMS = {};
 let SOURCES = [];
@@ -778,10 +780,10 @@ function initTabs() {
 
 async function init() {
   try {
-    SOURCES = await (await fetch(MANIFEST_FILE)).json();
-    COVER_DIMS = await fetch('covers.json').then(r => r.ok ? r.json() : {}).catch(() => ({}));
+    SOURCES = await (await fetch(MANIFEST_FILE + VQ)).json();
+    COVER_DIMS = await fetch('covers.json' + VQ).then(r => r.ok ? r.json() : {}).catch(() => ({}));
     const results = await Promise.all(SOURCES.map(async s => {
-      const res = await fetch(s.file);
+      const res = await fetch(s.file + VQ);
       if (!res.ok) throw new Error(s.file);
       return parseEntries(await res.text(), s);
     }));
@@ -795,7 +797,7 @@ async function init() {
     initTabs();
     document.getElementById('boards').innerHTML = renderBoards(ALL);
 
-    const rulesRes = await fetch(RULES_FILE);
+    const rulesRes = await fetch(RULES_FILE + VQ);
     document.getElementById('rulesBody').innerHTML = renderRulesVisual(await rulesRes.text());
 
     document.getElementById('search').addEventListener('input', ev => {
