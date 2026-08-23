@@ -353,7 +353,7 @@ function trunc(s, n) { s = s || ''; return s.length > n ? s.slice(0, n) + '…' 
 
 function cardHtml(e) {
   const [bcBg, bcFg] = colorOf(e.blogger);
-  const typeShort = (e.type || '').split(/（|\(/)[0].trim();
+  const typeShort = mainType(e.type);
   return `
   <article class="card">
     <div class="card-head">
@@ -498,7 +498,7 @@ function applyFilters(resetPage = true) {
   const q = state.q.toLowerCase();
   let list = ALL.filter(e => {
     if (state.blogger && e.blogger !== state.blogger) return false;
-    if (state.type && !e.type.includes(state.type)) return false;
+    if (state.type && mainType(e.type) !== state.type) return false;
     if (state.form === '视频' && !e.isVideo) return false;
     if (state.form === '图文' && e.isVideo) return false;
     if (q) {
@@ -609,7 +609,7 @@ function restoreFromHash() {
   state.q = p.get('q') || '';
   document.getElementById('search').value = state.q;
   state.type = p.get('t') || '';
-  if (!TYPE_OPTIONS.some(o => o[0] === state.type)) state.type = '';
+  if (!typeOptions().some(o => o[0] === state.type)) state.type = '';
   state.form = p.get('f') || '';
   document.querySelectorAll('#formSeg .seg-btn').forEach(x => x.classList.toggle('active', x.dataset.v === state.form));
   state.sort = p.get('s') || 'date';
@@ -697,7 +697,12 @@ function initBloggerSelect() {
 }
 
 /* ============ 通用下拉（类型/排序，与博主下拉同款面板） ============ */
-const TYPE_OPTIONS = [['', '全部内容类型'], ['教程', '教程类'], ['案例拆解', '案例拆解'], ['工具测评', '工具测评'], ['行业观点', '行业观点'], ['其他', '其他']];
+function mainType(t) { return (t || '').split(/·|（|\(/)[0].trim(); }
+function typeOptions() {
+  const c = {};
+  ALL.forEach(e => { const m = mainType(e.type); if (m) c[m] = (c[m] || 0) + 1; });
+  return [['', '全部内容类型']].concat(Object.keys(c).sort((a, b) => c[b] - c[a]).map(k => [k, k]));
+}
 const SORT_OPTIONS = [['date', '发布日 · 新→旧'], ['like', '点赞 · 高→低'], ['fav', '收藏 · 高→低'], ['favRatio', '收藏比 · 高→低'], ['comRatio', '评论比 · 高→低'], ['shareRatio', '分享比 · 高→低']];
 function initDropdown(cfg) {
   const btn = document.getElementById(cfg.btn), panel = document.getElementById(cfg.panel), list = document.getElementById(cfg.list);
@@ -784,7 +789,7 @@ async function init() {
 
     restoreFromHash();
     initBloggerSelect();
-    initDropdown({ btn: 'typeBtn', panel: 'typePanel', list: 'typeList', options: TYPE_OPTIONS, get: () => state.type, set: v => { state.type = v; } });
+    initDropdown({ btn: 'typeBtn', panel: 'typePanel', list: 'typeList', options: typeOptions(), get: () => state.type, set: v => { state.type = v; } });
     initDropdown({ btn: 'sortBtn', panel: 'sortPanel', list: 'sortList', options: SORT_OPTIONS, get: () => state.sort, set: v => { state.sort = v; } });
     renderBloggers();
     initTabs();
