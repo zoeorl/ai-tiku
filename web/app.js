@@ -1,7 +1,7 @@
 /* ============ 数据源：清单驱动，md 单一数据源 ============ */
 /* 新增博主：建专册 md + 在 bloggers.json 加一行，无需改代码 */
 const MANIFEST_FILE = 'bloggers.json';
-const APP_VER = "202608231852";
+const APP_VER = "202608232101";
 const VQ = '?v=' + APP_VER;
 const RULES_FILE = '../00-总览与跨博主规律.md';
 let COVER_DIMS = {};
@@ -344,7 +344,9 @@ const AVATARS = {
   '数字游牧人': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo30ncmhoib6e0g5n0vha61nh1t08apn1o?imageView2/2/w/540/format/webp',
   '赛文乔伊': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31ve9844sjq005n1df7q1fp0ebqtorrg?imageView2/2/w/540/format/webp',
   '西门聪明蛋': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31sc85tqplc005ptkkag3jv85rm8nen0?imageView2/2/w/540/format/webp',
-  'Xuan酱': 'https://sns-avatar-qc.xhscdn.com/avatar/642d4d51a61cee6d85ad0f2e.jpg?imageView2/2/w/540/format/webp'
+  'Xuan酱': 'https://sns-avatar-qc.xhscdn.com/avatar/642d4d51a61cee6d85ad0f2e.jpg?imageView2/2/w/540/format/webp',
+  '卡尔的AI沃茨': 'https://sns-avatar-qc.xhscdn.com/avatar/667ce4d3abe1e6168f265e94.jpg?imageView2/2/w/540/format/webp',
+  '数字生命卡兹克': 'https://sns-avatar-qc.xhscdn.com/avatar/63fa31de24b3a2242c5fef99.jpg?imageView2/2/w/540/format/webp'
 };
 /* 博主头像；CDN 失效时回退彩色圆点 */
 function avatarHtml(name) {
