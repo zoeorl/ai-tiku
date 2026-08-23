@@ -1,7 +1,7 @@
 /* ============ 数据源：清单驱动，md 单一数据源 ============ */
 /* 新增博主：建专册 md + 在 bloggers.json 加一行，无需改代码 */
 const MANIFEST_FILE = 'bloggers.json';
-const APP_VER = "202608240301";
+const APP_VER = "202608240403";
 const VQ = '?v=' + APP_VER;
 const RULES_FILE = '../00-总览与跨博主规律.md';
 let COVER_DIMS = {};
@@ -349,7 +349,8 @@ const AVATARS = {
   '数字生命卡兹克': 'https://sns-avatar-qc.xhscdn.com/avatar/63fa31de24b3a2242c5fef99.jpg?imageView2/2/w/540/format/webp',
   '歸藏': 'https://sns-avatar-qc.xhscdn.com/avatar/64155f889e2ef0a4db21a149.jpg?imageView2/2/w/540/format/webp',
   '蔡不菜（AI版）': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31s5gi1mmlk005o0uqep0991odp40o9o?imageView2/2/w/540/format/webp',
-  '跟着阿亮学AI': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mq3mt7f4q005ns4d5fg934diqnlr20?imageView2/2/w/540/format/webp'
+  '跟着阿亮学AI': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31mq3mt7f4q005ns4d5fg934diqnlr20?imageView2/2/w/540/format/webp',
+  '是金三啊': 'https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo31ut0jvemhu00492mspm75bfdhu29bdo?imageView2/2/w/540/format/webp'
 };
 /* 博主头像；CDN 失效时回退彩色圆点 */
 function avatarHtml(name) {
