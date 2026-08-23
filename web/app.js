@@ -1,7 +1,7 @@
 /* ============ 数据源：清单驱动，md 单一数据源 ============ */
 /* 新增博主：建专册 md + 在 bloggers.json 加一行，无需改代码 */
 const MANIFEST_FILE = 'bloggers.json';
-const APP_VER = "202608240527";
+const APP_VER = "202608240537";
 const VQ = '?v=' + APP_VER;
 const RULES_FILE = '../00-总览与跨博主规律.md';
 let COVER_DIMS = {};
