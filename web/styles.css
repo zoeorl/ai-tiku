@@ -134,6 +134,22 @@ select:hover { border-color: var(--accent); color: var(--accent); }
 .seg-btn:hover { color: var(--accent); }
 .seg-btn.active { background: var(--ink); color: #fff; }
 
+/* ============ 双轨骨架 ============ */
+.track-seg { margin-left: auto; }
+.track-seg .seg-btn { padding: 7px 20px; font-size: 14px; }
+.track-seg .seg-btn.active { background: var(--accent); }
+.bgroup-head { margin: 20px 2px 12px; font-size: 15px; font-weight: 800; color: var(--ink); display: flex; align-items: center; gap: 10px; }
+.bgroup-head::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.bwrap .bgrid:first-of-type { margin-top: 4px; }
+
+/* ============ 双轨骨架 ============ */
+.track-seg { margin-left: auto; }
+.track-seg .seg-btn { padding: 7px 20px; font-size: 14px; }
+.track-seg .seg-btn.active { background: var(--accent); }
+.bgroup-head { margin: 20px 2px 12px; font-size: 15px; font-weight: 800; color: var(--ink); display: flex; align-items: center; gap: 10px; }
+.bgroup-head::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.bwrap .bgrid:first-of-type { margin-top: 4px; }
+
 .stats { margin: 16px 2px 4px; font-size: 13px; color: var(--sub); }
 .stats b { color: var(--accent); font-size: 15px; margin: 0 2px; }
 

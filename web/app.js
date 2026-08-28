@@ -1,7 +1,7 @@
 /* ============ 数据源：清单驱动，md 单一数据源 ============ */
 /* 新增博主：建专册 md + 在 bloggers.json 加一行，无需改代码 */
 const MANIFEST_FILE = 'bloggers.json';
-const APP_VER = "202608281441";
+const APP_VER = "202608281501";
 const VQ = '?v=' + APP_VER;
 const RULES_FILE = '../00-总览与跨博主规律.md';
 let COVER_DIMS = {};
@@ -249,7 +249,7 @@ function renderRulesVisual(md) {
       html.push(renderTable(rows));
       continue;
     }
-    if (/^\*\*[A-D]\./.test(t)) { html.push(groupHeadHtml(t)); i++; continue; }
+    if (/^\*\*[A-F]\./.test(t)) { html.push(groupHeadHtml(t)); i++; continue; }
     const bl = boardLineHtml(t);
     if (bl) { html.push(bl); i++; continue; }
     const nm = t.match(/^(\d+)\.\s+(.*)$/);
@@ -474,7 +474,7 @@ function closeModal() {
 }
 
 /* ============ 榜单渲染 ============ */
-function renderBoards(all) {
+function renderBoards(all, pre = '') {
   const by = (arr, key, asc = false) =>
     arr.filter(e => e[key] !== null && e[key] !== undefined)
        .sort((a, b) => asc ? a[key] - b[key] : b[key] - a[key])
@@ -488,7 +488,7 @@ function renderBoards(all) {
   ];
   return boards.map(b => `
     <div class="board">
-      <h3>${b.title}</h3>
+      <h3>${pre}${b.title}</h3>
       <div class="desc">${b.desc}</div>
       <ol>${b.rows.map((e, i) => `
         <li>
@@ -500,8 +500,58 @@ function renderBoards(all) {
     </div>`).join('');
 }
 
+/* ============ 双轨视图 ============ */
+function accountEntries() { return state.account ? ALL.filter(e => e.account === state.account) : ALL; }
+function setAccount(v) {
+  state.account = v;
+  document.querySelectorAll('#trackSeg .seg-btn').forEach(x => x.classList.toggle('active', x.dataset.v === v));
+  syncHash();
+  applyFilters();
+  renderBloggerBar();
+  renderBloggers();
+  renderBoardsView();
+  renderRulesView();
+}
+function renderBoardsView() {
+  const pre = state.account === '摄影号' ? '摄影赛道 ' : state.account === '主账号-AI' ? 'AI 赛道 ' : '';
+  let html = renderBoards(accountEntries(), pre);
+  if (state.account === '摄影号') html = '<div class="rcallout"><p>摄影赛道比值基准：中位藏/赞≈16%，与 AI 教程赛道（≈100%）量纲不同——榜内位次有效，跨赛道绝对值不可比。</p></div>' + html;
+  document.getElementById('boards').innerHTML = html;
+}
+function filterRulesMd(md) {
+  if (!state.account) return md;
+  const isPhoto = state.account === '摄影号';
+  return md.split(/(?=^## )/m).map(p => {
+    if (p.startsWith('## 一、博主名录')) {
+      return p.split('\n').filter(L => {
+        const m = L.match(/^\|\s*(\d+)\s*\|/);
+        if (!m) return true;
+        const s = SOURCES.find(x => x.file.startsWith(m[1] + '-'));
+        return isPhoto ? (s && s.account === '摄影号') : (!s || s.account !== '摄影号');
+      }).join('\n');
+    }
+    if (p.startsWith('## 二、')) {
+      if (isPhoto) return '## 二、跨博主总榜\n\n> 摄影赛道独立榜单见「赛道榜单」页——跨赛道比值绝对值不可比，总榜为全库合计，仅供 AI 赛道对照。';
+      return p;
+    }
+    if (p.startsWith('## 三、')) {
+      return p.split(/(?=^\*\*[A-F]\.)/m).map(b => {
+        const m = b.match(/^\*\*([A-F])\./);
+        if (!m) return b;
+        const keep = isPhoto ? (m[1] === 'E' || m[1] === 'F') : m[1] !== 'F';
+        return keep ? b : '';
+      }).join('');
+    }
+    return p;
+  }).join('');
+}
+function renderRulesView() {
+  if (RULES_MD) document.getElementById('rulesBody').innerHTML = renderRulesVisual(filterRulesMd(RULES_MD));
+}
+
 /* ============ 主流程 ============ */
 let ALL = [];
+let RULES_MD = '';
 const PAGE_SIZE = 30;
 const state = { q: '', blogger: '', type: '', form: '', account: '', sort: 'date', shown: PAGE_SIZE };
 let currentList = [];
@@ -585,9 +635,9 @@ function layoutGrid(heightOverride, keepCols) {
 }
 
 /* ============ 博主统计（下拉与总览共用） ============ */
-function bloggerStats() {
+function bloggerStats(list = ALL) {
   const m = new Map();
-  for (const e of ALL) {
+  for (const e of list) {
     let s = m.get(e.blogger);
     if (!s) { s = { name: e.blogger, n: 0, like: 0, fav: 0, ratios: [] }; m.set(e.blogger, s); }
     s.n++;
@@ -599,7 +649,7 @@ function bloggerStats() {
   for (const s of arr) {
     s.ratios.sort((a, b) => a - b);
     s.medFavRatio = s.ratios.length ? s.ratios[Math.floor(s.ratios.length / 2)] : null;
-    s.top = ALL.filter(e => e.blogger === s.name).sort((a, b) => (b.like || 0) - (a.like || 0))[0];
+    s.top = list.filter(e => e.blogger === s.name).sort((a, b) => (b.like || 0) - (a.like || 0))[0];
   }
   return arr.sort((a, b) => b.like - a.like);
 }
@@ -622,7 +672,7 @@ function restoreFromHash() {
   const p = new URLSearchParams(location.hash.slice(1));
   state.blogger = p.get('b') || '';
   state.account = p.get('a') || '';
-  document.querySelectorAll('#accountSeg .seg-btn').forEach(x => x.classList.toggle('active', x.dataset.v === state.account));
+  document.querySelectorAll('#trackSeg .seg-btn').forEach(x => x.classList.toggle('active', x.dataset.v === state.account));
   state.q = p.get('q') || '';
   document.getElementById('search').value = state.q;
   state.type = p.get('t') || '';
@@ -644,7 +694,7 @@ function syncBloggerBtn() {
 function renderBloggerBar() {
   const bar = document.getElementById('bloggerBar');
   if (!bar) return;
-  const stats = bloggerStats();
+  const stats = bloggerStats(accountEntries());
   bar.innerHTML =
     `<button type="button" class="bbar-item ${state.blogger === '' ? 'active' : ''}" data-b=""><span class="bbar-av">全部</span><span class="bbar-name">全部</span></button>` +
     stats.map(s => `<button type="button" class="bbar-item ${state.blogger === s.name ? 'active' : ''}" data-b="${escapeHtml(s.name)}"><span class="bbar-av">${avatarHtml(s.name)}</span><span class="bbar-name">${escapeHtml(s.name)}</span></button>`).join('');
@@ -660,7 +710,7 @@ function setBlogger(b) {
 }
 
 function renderBloggerList(filter = '') {
-  const stats = bloggerStats();
+  const stats = bloggerStats(accountEntries());
   const f = filter.trim().toLowerCase();
   const rows = stats.filter(s => !f || s.name.toLowerCase().includes(f));
   const hl = name => {
@@ -745,10 +795,10 @@ function initDropdown(cfg) {
 
 /* ============ 博主总览 ============ */
 function renderBloggers() {
-  const stats = bloggerStats();
-  document.getElementById('bloggerStatsLine').innerHTML =
-    `已收录 <b>${stats.length}</b> 位博主 · <b>${ALL.length}</b> 条验证爆款 · 点卡片看该博主全部条目`;
-  document.getElementById('bloggerGrid').innerHTML = stats.map(s => {
+  const list = accountEntries();
+  const stats = bloggerStats(list);
+  const accOf = n => (SOURCES.find(s => s.name === n) || {}).account || '';
+  const card = s => {
     const [bg, fg] = colorOf(s.name);
     return `
     <button class="bcard" data-b="${escapeHtml(s.name)}">
@@ -764,7 +814,19 @@ function renderBloggers() {
       </div>
       <div class="bcard-top">👑 ${s.top ? escapeHtml(s.top.title) : ''}</div>
     </button>`;
-  }).join('');
+  };
+  let html;
+  if (!state.account) {
+    html = [['主账号-AI', 'AI 赛道'], ['摄影号', '摄影赛道']].map(([a, label]) => {
+      const gs = stats.filter(s => accOf(s.name) === a);
+      return gs.length ? `<div class="bgroup-head">${label} · ${gs.length} 位博主</div><div class="bgrid">${gs.map(card).join('')}</div>` : '';
+    }).join('');
+  } else {
+    html = `<div class="bgrid">${stats.map(card).join('')}</div>`;
+  }
+  document.getElementById('bloggerStatsLine').innerHTML =
+    `已收录 <b>${stats.length}</b> 位博主 · <b>${list.length}</b> 条验证爆款 · 点卡片看该博主全部条目`;
+  document.getElementById('bloggerGrid').innerHTML = html;
   document.getElementById('bloggerGrid').addEventListener('click', ev => {
     const c = ev.target.closest('.bcard');
     if (!c) return;
@@ -810,10 +872,11 @@ async function init() {
     initDropdown({ btn: 'sortBtn', panel: 'sortPanel', list: 'sortList', options: SORT_OPTIONS, get: () => state.sort, set: v => { state.sort = v; } });
     renderBloggers();
     initTabs();
-    document.getElementById('boards').innerHTML = renderBoards(ALL);
+    renderBoardsView();
 
     const rulesRes = await fetch(RULES_FILE + VQ);
-    document.getElementById('rulesBody').innerHTML = renderRulesVisual(await rulesRes.text());
+    RULES_MD = await rulesRes.text();
+    renderRulesView();
 
     document.getElementById('search').addEventListener('input', ev => {
       state.q = ev.target.value.trim();
@@ -826,12 +889,10 @@ async function init() {
       document.querySelectorAll('#formSeg .seg-btn').forEach(x => x.classList.toggle('active', x === b));
       applyFilters();
     });
-    document.getElementById('accountSeg').addEventListener('click', ev => {
+    document.getElementById('trackSeg').addEventListener('click', ev => {
       const b = ev.target.closest('.seg-btn');
       if (!b) return;
-      state.account = b.dataset.v;
-      document.querySelectorAll('#accountSeg .seg-btn').forEach(x => x.classList.toggle('active', x === b));
-      applyFilters();
+      setAccount(b.dataset.v);
     });
     const moreBtn = document.getElementById('loadMore');
     moreBtn.addEventListener('click', () => { state.shown += PAGE_SIZE; renderGrid(); });

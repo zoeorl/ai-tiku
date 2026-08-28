@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI博主对标选题库</title>
-<link rel="stylesheet" href="styles.css?v=202608281441143605370527043804030301010823482243210421011852154214341422140814081345">
+<link rel="stylesheet" href="styles.css?v=2026082815011441143605370527043804030301010823482243210421011852154214341422140814081345">
 </head>
 <body>
 
@@ -13,16 +13,21 @@
     <div class="brand">
       <span class="brand-dot"></span>
       <div>
-        <h1>AI博主对标选题库</h1>
-        <p class="sub">已验证爆款 · 规律沉淀 · md 单一数据源实时解析</p>
+        <h1>对标选题库</h1>
+        <p class="sub">AI 赛道 × 摄影赛道 · 已验证爆款 · 规律沉淀</p>
       </div>
     </div>
     <nav class="tabs" id="tabs">
       <button class="tab active" data-tab="library">选题库</button>
       <button class="tab" data-tab="bloggers">博主总览</button>
-      <button class="tab" data-tab="boards">跨博主榜单</button>
-      <button class="tab" data-tab="rules">跨博主规律</button>
+      <button class="tab" data-tab="boards">赛道榜单</button>
+      <button class="tab" data-tab="rules">规律体系</button>
     </nav>
+    <div class="seg track-seg" id="trackSeg">
+      <button class="seg-btn active" type="button" data-v="">全部</button>
+      <button class="seg-btn" type="button" data-v="主账号-AI">AI 赛道</button>
+      <button class="seg-btn" type="button" data-v="摄影号">摄影赛道</button>
+    </div>
   </div>
 </header>
 
@@ -50,11 +55,6 @@
             <div class="bselect-list" id="typeList"></div>
           </div>
         </div>
-        <div class="seg" id="accountSeg">
-          <button class="seg-btn active" type="button" data-v="">全部账号</button>
-          <button class="seg-btn" type="button" data-v="主账号-AI">主账号-AI</button>
-          <button class="seg-btn" type="button" data-v="摄影号">摄影号</button>
-        </div>
         <div class="seg" id="formSeg">
           <button class="seg-btn active" type="button" data-v="">全部</button>
           <button class="seg-btn" type="button" data-v="视频">视频</button>
@@ -78,7 +78,7 @@
   <!-- 博主总览 -->
   <section id="view-bloggers" class="view">
     <div class="stats" id="bloggerStatsLine"></div>
-    <div class="bgrid" id="bloggerGrid"></div>
+    <div class="bwrap" id="bloggerGrid"></div>
   </section>
 
   <!-- 榜单 -->
@@ -106,7 +106,7 @@
   </div>
 </div>
 
-<script src="app.js?v=202608281441143605370527043804030301010823482243210421011852154214341422140814081345"></script>
+<script src="app.js?v=2026082815011441143605370527043804030301010823482243210421011852154214341422140814081345"></script>
 <script>
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
