@@ -1,5 +1,5 @@
 /* aitiku service worker: covers 永久缓存(cache-first) + 核心资源版本缓存(随 ?v= 版本重建) */
-const VER = "202608281504";
+const VER = "202608281513";
 const CORE = "aitiku-core-" + VER;
 const IMGS = "aitiku-imgs-v1";
 

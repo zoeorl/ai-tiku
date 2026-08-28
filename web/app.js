@@ -1,7 +1,7 @@
 /* ============ 数据源：清单驱动，md 单一数据源 ============ */
 /* 新增博主：建专册 md + 在 bloggers.json 加一行，无需改代码 */
 const MANIFEST_FILE = 'bloggers.json';
-const APP_VER = "202608281504";
+const APP_VER = "202608281513";
 const VQ = '?v=' + APP_VER;
 const RULES_FILE = '../00-总览与跨博主规律.md';
 let COVER_DIMS = {};
@@ -858,6 +858,7 @@ function initTabs() {
 async function init() {
   try {
     SOURCES = await (await fetch(MANIFEST_FILE + VQ)).json();
+    SOURCES.forEach(s => { const nm = (s.file.split('/').pop() || '').replace(/^\d+-/, '').replace(/\.md$/, ''); if (s.avatar && nm) AVATARS[nm] = s.avatar; });
     COVER_DIMS = await fetch('covers.json' + VQ).then(r => r.ok ? r.json() : {}).catch(() => ({}));
     const results = await Promise.all(SOURCES.map(async s => {
       const res = await fetch(s.file + VQ);
