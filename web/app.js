@@ -1,7 +1,7 @@
 /* ============ 数据源：清单驱动，md 单一数据源 ============ */
 /* 新增博主：建专册 md + 在 bloggers.json 加一行，无需改代码 */
 const MANIFEST_FILE = 'bloggers.json';
-const APP_VER = "202608281501";
+const APP_VER = "202608281504";
 const VQ = '?v=' + APP_VER;
 const RULES_FILE = '../00-总览与跨博主规律.md';
 let COVER_DIMS = {};
@@ -526,7 +526,7 @@ function filterRulesMd(md) {
       return p.split('\n').filter(L => {
         const m = L.match(/^\|\s*(\d+)\s*\|/);
         if (!m) return true;
-        const s = SOURCES.find(x => x.file.startsWith(m[1] + '-'));
+        const s = SOURCES.find(x => (/(\d{2})-/.exec(x.file) || [])[1] === m[1]);
         return isPhoto ? (s && s.account === '摄影号') : (!s || s.account !== '摄影号');
       }).join('\n');
     }
@@ -797,7 +797,7 @@ function initDropdown(cfg) {
 function renderBloggers() {
   const list = accountEntries();
   const stats = bloggerStats(list);
-  const accOf = n => (SOURCES.find(s => s.name === n) || {}).account || '';
+  const accOf = n => (ALL.find(e => e.blogger === n) || {}).account || '';
   const card = s => {
     const [bg, fg] = colorOf(s.name);
     return `
