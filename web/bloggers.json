@@ -1,82 +1,128 @@
 [
  {
   "file": "../01-清华姜学长.md",
-  "short": "姜"
+  "short": "姜",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../02-黄白.md",
-  "short": "黄"
+  "short": "黄",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../03-未来设计师KiK.md",
-  "short": "KiK"
+  "short": "KiK",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../04-张咋啦.md",
-  "short": "咋"
+  "short": "咋",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../05-料到Ai.md",
-  "short": "料"
+  "short": "料",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../06-AI红发魔女.md",
-  "short": "魔女"
+  "short": "魔女",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../07-嘿腿子腿子.md",
-  "short": "腿"
+  "short": "腿",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../08-Rico有三猫.md",
-  "short": "猫"
+  "short": "猫",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../09-数字游牧人.md",
-  "short": "牧"
+  "short": "牧",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../10-赛文乔伊.md",
-  "short": "乔"
+  "short": "乔",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../11-西门聪明蛋.md",
-  "short": "蛋"
+  "short": "蛋",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../12-Xuan酱.md",
-  "short": "酱"
+  "short": "酱",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../13-卡尔的AI沃茨.md",
-  "short": "沃"
+  "short": "沃",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../14-数字生命卡兹克.md",
-  "short": "卡"
+  "short": "卡",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../15-歸藏.md",
-  "short": "藏"
+  "short": "藏",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../16-蔡不菜（AI版）.md",
-  "short": "菜"
+  "short": "菜",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../17-跟着阿亮学AI.md",
-  "short": "亮"
+  "short": "亮",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../18-是金三啊.md",
-  "short": "金"
+  "short": "金",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../19-阿囤囤.md",
-  "short": "囤"
+  "short": "囤",
+  "account": "主账号-AI",
+  "track": "AI"
  },
  {
   "file": "../20-机器坏人（AI版）.md",
-  "short": "坏"
+  "short": "坏",
+  "account": "主账号-AI",
+  "track": "AI"
+ },
+ {
+  "file": "../21-燕西Yancy.md",
+  "short": "燕",
+  "account": "摄影号",
+  "track": "旅行摄影"
  }
 ]

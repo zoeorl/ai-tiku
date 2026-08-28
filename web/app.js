@@ -1,7 +1,7 @@
 /* ============ 数据源：清单驱动，md 单一数据源 ============ */
 /* 新增博主：建专册 md + 在 bloggers.json 加一行，无需改代码 */
 const MANIFEST_FILE = 'bloggers.json';
-const APP_VER = "202608240537";
+const APP_VER = "202608281436";
 const VQ = '?v=' + APP_VER;
 const RULES_FILE = '../00-总览与跨博主规律.md';
 let COVER_DIMS = {};
@@ -102,6 +102,7 @@ function parseEntries(md, source) {
     out.push({
       id, title, link, date, blogger,
       short: source.short,
+      account: source.account || '',
       book: ((source.file || '').match(/(\d{2})-/) || [])[1] || '',
       coverNote: get(/^- 封面分析：(.+)$/m),
       form: formLine,
@@ -502,7 +503,7 @@ function renderBoards(all) {
 /* ============ 主流程 ============ */
 let ALL = [];
 const PAGE_SIZE = 30;
-const state = { q: '', blogger: '', type: '', form: '', sort: 'date', shown: PAGE_SIZE };
+const state = { q: '', blogger: '', type: '', form: '', account: '', sort: 'date', shown: PAGE_SIZE };
 let currentList = [];
 
 function applyFilters(resetPage = true) {
@@ -510,6 +511,7 @@ function applyFilters(resetPage = true) {
   const q = state.q.toLowerCase();
   let list = ALL.filter(e => {
     if (state.blogger && e.blogger !== state.blogger) return false;
+    if (state.account && e.account !== state.account) return false;
     if (state.type && mainType(e.type) !== state.type) return false;
     if (state.form === '视频' && !e.isVideo) return false;
     if (state.form === '图文' && e.isVideo) return false;
@@ -606,6 +608,7 @@ function bloggerStats() {
 function syncHash() {
   const p = new URLSearchParams();
   if (state.blogger) p.set('b', state.blogger);
+  if (state.account) p.set('a', state.account);
   if (state.type) p.set('t', state.type);
   if (state.form) p.set('f', state.form);
   if (state.sort && state.sort !== 'date') p.set('s', state.sort);
@@ -618,6 +621,8 @@ function restoreFromHash() {
   if (!location.hash) return;
   const p = new URLSearchParams(location.hash.slice(1));
   state.blogger = p.get('b') || '';
+  state.account = p.get('a') || '';
+  document.querySelectorAll('#accountSeg .seg-btn').forEach(x => x.classList.toggle('active', x.dataset.v === state.account));
   state.q = p.get('q') || '';
   document.getElementById('search').value = state.q;
   state.type = p.get('t') || '';
@@ -819,6 +824,13 @@ async function init() {
       if (!b) return;
       state.form = b.dataset.v;
       document.querySelectorAll('#formSeg .seg-btn').forEach(x => x.classList.toggle('active', x === b));
+      applyFilters();
+    });
+    document.getElementById('accountSeg').addEventListener('click', ev => {
+      const b = ev.target.closest('.seg-btn');
+      if (!b) return;
+      state.account = b.dataset.v;
+      document.querySelectorAll('#accountSeg .seg-btn').forEach(x => x.classList.toggle('active', x === b));
       applyFilters();
     });
     const moreBtn = document.getElementById('loadMore');
